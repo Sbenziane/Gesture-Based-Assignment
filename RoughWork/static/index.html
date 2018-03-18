@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Lazer Maze</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+    crossorigin="anonymous">
+  <style>
+    p{
+      font-size: 14px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    }
+  </style>
+</head>
+
+<body style="background: rgb(228, 228, 235)">
+
+  <div class="jumbotron text-center text-white rounded-0" style="padding-top:20px; padding-bottom:10px; background: rgb(43, 43, 48)">          
+    <h1>Lazer Maze</h1>
+  </div>
+
+  <div class="row align-items-center container-fluid">
+
+    <div class="col-lg-8 rounded" style="min-height: 500px; min-width: 700px; padding-top: 60px; padding-left:50px;" >
+        <div class="container" style="margin-left: auto; margin-right: auto; display: block; height: 500px; width: 800px">
+                <canvas style="border:1px solid #000000;" height="400" width="700" id="gameCanvas">
+                </canvas>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="rounded" style="padding-right: 30px; padding-left: 30px; margin-right:50px; margin-top: 40px;">
+      <h4><b>4th Year</b></h4>
+      <h5><b>Gesture-Based UI Assignment</b></h5>      
+      <p>Lazer Maze is a final year GMIT Software Development project, developed as part of <i>Gesture-Based UI</i> by Tara O'Kelly and Rebecca Kane.</p>
+
+      <br>
+      <br>
+      <p style="font-size: 12px; text-align: right; padding-right: 10px"><a href="https://github.com/taraokelly/Gesture-Based-Assignment"><i>Source Code</i></a></p>
+      </div>
+    </div>
+
+  </div>
+
+
+  <script type="text/javascript">
+
+    var canvas = document.querySelector("#gameCanvas");
+    var context = canvas.getContext("2d");
+    var canvasPos = getPosition(canvas);
+    var mouseX = 0;
+    var mouseY = 0;
+ 
+    canvas.addEventListener("mousemove", setMousePosition, false);
+ 
+    
+    function setMousePosition(e) {
+        mouseX = e.clientX - (canvasPos.x);
+        mouseY = e.clientY - (canvasPos.y);
+    }       
+
+    function getPosition(el) {
+        var xPosition = 0;
+        var yPosition = 0;
+        
+        while (el) {
+            xPosition += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+            yPosition += (el.offsetTop - el.scrollTop + el.clientTop);
+            el = el.offsetParent;
+        }
+        return {
+            x: xPosition,
+            y: yPosition
+        };
+    }
+
+    function update() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.beginPath();
+        context.arc(mouseX, mouseY, 5, 0, 2 * Math.PI, true);
+        context.fillStyle = "#FF6A6A";
+        context.fill();
+
+        requestAnimationFrame(update);
+    }
+    
+    update();
+
+  </script>
+
+</body>
+
+</html>
