@@ -21,10 +21,10 @@ Now we had settled the orientation of our app, we needed to brainstorm and figur
 
 Myo armbands are compatible with mulitiple languages including C# and JavaScript, which were particularly interested in.
 
-+ **C#** - Using Unity with C# would be a suitable choice in making a game. [Unity](https://unity3d.com) is a efficient, crossplatform game engine that supports 2D and 3D graphics. The unity app could then be exported and uploaded to the [Myo Market](https://market.myo.com/).
-+ **JavaScript** - JavaScript would not be as optimal for game making. However, a powerful game engine may not needed for such a simplitic game. A HTML5 canvas would probably surfice. If needed a JavaScript game framework could be applied in makeing the game, e.g. [Phaser JS](https://phaser.io/). Most notably, the application would be easily accessible - more than that of a Myo Market application. Instead of downloading and installing software, a simple HTTP request in a favoured browser would bring a user to the game. 
++ **C#** - Using Unity with C# would be a suitable choice to make a game. [Unity](https://unity3d.com) is a efficient, cross platform game engine that supports both 2D and 3D graphics. The unity app could then be exported and uploaded to the [Myo Market](https://market.myo.com/).
++ **JavaScript** - JavaScript would not be as optimal for game making. However, a powerful game engine may not needed for such a simplistic game. A HTML5 canvas would probably suffice. If needed a JavaScript game framework could be applied in making  the game, e.g. [Phaser JS](https://phaser.io/). Most notably, the application would be easily accessible - more than that of a Myo Market application. Instead of downloading and installing software, a simple HTTP request in a favoured browser would bring a user to the game. 
 
-After considering the options, we agreed JavaScript would be ideal considering that it meets our requirements and has the optimal deployment. We will attempt to use solely HTML5 canvas - if this proves to be insufficient, we will look into the many JavaScript game frameworks. As for the actual deployment, we plan to host a simple Python server with Docker and Heroku.
+After considering the options, we agreed JavaScript would be ideal considering that it meets our requirements and has the most favorable deployment. We will attempt to use solely HTML5 canvas - if this proves to be insufficient, we will investigate the many JavaScript game frameworks. As for the actual deployment, we plan to host a simple Python server with Docker and Heroku.
 
 ## References
 
