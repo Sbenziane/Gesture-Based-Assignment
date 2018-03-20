@@ -1,0 +1,119 @@
+<html>
+    <body>
+    <canvas id="myCanvas" width="735" height="500" style="border:1px solid #d3d3d3;">
+        Your browser does not support the HTML5 canvas tag.</canvas>
+    <p id="demo"></p>
+        <script>
+        var imgData;
+        var canvas = document.getElementById("myCanvas");
+        var ctx = canvas.getContext("2d");
+        var canvas_width = canvas.width;
+        var canvas_height = canvas.height;
+        var start_x = 50;
+        var start_y = 450;
+        var end_x = 680;
+        var end_y = 450;
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = "#020202";
+        // Set up game.
+        // Draw wire and copy image data of just the wire in the canvas.
+        // Then clear to draw properly. 
+        draw_wire();
+        getImgData();
+        ctx.clearRect(0, 0, canvas_width, canvas_height);
+
+        extra_graphics();
+        draw_wire();
+        draw_hoop()
+
+        function getImgData(){
+            // Get canvas data.
+            imgData = ctx.getImageData(0,0, canvas_width, canvas_height);
+            console.log(imgData);
+            // Get the first pixel at the beginning of wire path - row:449, col:50.
+            startWirePixel = imgData.data[((start_y - 1) * (imgData.width * 4)) + ((start_x - 1) * 4)];
+            document.getElementById("demo").innerHTML = "Colour of pixel [" + (start_y - 1) + "][" + (start_x - 1) + "] : " + startWirePixel + " (ranges from 0-255)";
+        }
+        function draw_hoop(){
+            // Canvas oval.
+            // Adapted from: http://scienceprimer.com/draw-oval-html5-canvas
+            ctx.beginPath();
+            for (var i = 0 * Math.PI; i < 2 * Math.PI; i += 0.01 ) {
+                xPos = 50 - (5 * Math.sin(i)) * Math.sin(0 * Math.PI) + (20 * Math.cos(i)) * Math.cos(0 * Math.PI);
+                yPos = 450 + (20 * Math.cos(i)) * Math.sin(0 * Math.PI) + (5 * Math.sin(i)) * Math.cos(0 * Math.PI);
+                if (i == 0)
+                    ctx.moveTo(xPos, yPos);
+                else
+                    ctx.lineTo(xPos, yPos);
+            }
+            ctx.stroke();
+            ctx.closePath();
+        }
+        function draw_wire(){
+            // Drawn with Bezier Curves:
+            // https://www.w3schools.com/tags/canvas_beziercurveto.asp
+            ctx.beginPath();
+            ctx.moveTo(50, 450);
+            ctx.bezierCurveTo(20, 20, 100, 100, 100, 100);
+            ctx.bezierCurveTo(120, 120, 50, 200, 100, 200);
+            ctx.bezierCurveTo(220, 220, 75, 100, 150, 150);
+            ctx.bezierCurveTo(320, 320, 50, 250, 200, 400);
+            ctx.bezierCurveTo(300, 500, 100, 250, 300, 250);
+            ctx.bezierCurveTo(300, -50, 300, 75, 350, 100);
+            ctx.bezierCurveTo(600, 250, 150, 250, 400, 300);
+            ctx.bezierCurveTo(600, 350, 350, 150, 600, 100);
+            ctx.bezierCurveTo(650, 100, 500, 300, 600, 250);
+            ctx.bezierCurveTo(700, 190, 550, 400, 675, 250);
+            ctx.bezierCurveTo(725, 200, 700, 300, 680, 450);
+            ctx.stroke();
+            ctx.closePath();
+        }
+        function wire_holder(x, y, w, h, c){
+            w2 = w/2;
+            h2 = h/2;
+            x1 = x - w2;
+            y1 = y + h;
+            x2 = x + w2;
+
+            // Body of cylinder.
+            ctx.beginPath();
+            ctx.moveTo(x1, y);
+            ctx.lineTo(x1,y1-1);
+            ctx.bezierCurveTo(x1,y1,x,y+c,x2,y1);
+            ctx.fillStyle = "#a85114";
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.moveTo(x2, y);
+            ctx.lineTo(x2,y1-1);
+            ctx.bezierCurveTo(x2,y1,x,y+c,x1,y1);
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+            
+            // Oval on top.
+            ctx.beginPath();
+            for (var i = 0 * Math.PI; i < 2 * Math.PI; i += 0.01 ) {
+                xPos = x - (h2 * Math.sin(i)) * Math.sin(0 * Math.PI) + (w2 * Math.cos(i)) * Math.cos(0 * Math.PI);
+                yPos = y + (w2 * Math.cos(i)) * Math.sin(0 * Math.PI) + (h2 * Math.sin(i)) * Math.cos(0 * Math.PI);
+                if (i == 0)
+                    ctx.moveTo(xPos, yPos);
+                else
+                    ctx.lineTo(xPos, yPos);
+            }
+            ctx.fillStyle = "#f28b43";
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+        }
+        function extra_graphics(){
+            // Left.
+            wire_holder(start_x, start_y, 80, 20, 35);
+            // Right.
+            wire_holder(end_x, end_y, 80, 20, 35);
+        }
+        </script>
+    </body>
+</html>
