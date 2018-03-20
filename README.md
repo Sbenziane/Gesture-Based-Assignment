@@ -1,8 +1,13 @@
-# Gesture-Based-Assignment
+# Gesture Based Assignment
+
+*An JavaScript Buzz Wire game with a gesture controlled UI, using Myo armbands, and a Python backend. Forth Year, Gesture Based UI, Software Development.*
+
+This repository contains an project assigned the assist the learning of the module Gesture Based UI. This task is worth 60% of the overall grade and is to be completed, in teams of two, by the 9th of April. 
 
 ## Table of Contents
 
 + [Requirements](#requirements)
++ [Team](#team)
 + [Planning](#planning)
 + [Technologies](#technologies)
 + [Implementation](#implementation)
@@ -15,6 +20,13 @@
 + The minimum expectations for this NUI app would be a locally run implementation.
 + Any programming language can be used.
 + Each project should be developed by teams of two.
+
+The full specification can be found in the [spec.pdf](https://github.com/taraokelly/Gesture-Based-Assignment/blob/master/spec.pdf)
+
+## Team 
+
++ [Rebecca Kane](https://github.com/rebeccabernie)
++ [Tara O'Kelly](https://github.com/taraokelly)
 
 ## Planning
 
