@@ -21,7 +21,7 @@ This repository contains an project assigned the assist the learning of the modu
 + Any programming language can be used.
 + Each project should be developed by teams of two.
 
-The full specification can be found in the [spec.pdf](https://github.com/taraokelly/Gesture-Based-Assignment/blob/master/spec.pdf)
+The full specification can be found in the [spec.pdf](https://github.com/taraokelly/Gesture-Based-Assignment/blob/master/spec.pdf) file.
 
 ## Team 
 
