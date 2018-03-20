@@ -9,7 +9,7 @@
 
 ## Requirements
 
-+ An application with a Natural User Interface is required, i.e. controlled by natural means - body movements, vocal commands, etc.
++ An application with a Natural User Interface(NUI) is required, i.e. controlled by natural means - body movements, vocal commands, etc.
 + The minimum expectations for this NUI app would be a locally run implementation.
 + Any programming language can be used.
 + Each project should be developed by teams of two.
