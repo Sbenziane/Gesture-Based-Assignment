@@ -5,6 +5,8 @@
 + [Requirements](#requirements)
 + [Planning](#planning)
 + [Technologies](#technologies)
++ [Implementation](#implementation)
++ [How To Run](#how-to-run)
 + [References](#references)
 
 ## Requirements
@@ -34,6 +36,14 @@ After considering the options, we agreed JavaScript would be ideal considering t
 + [**Python 3**](https://www.python.org/download/releases/3.0/) - Python is a simple yet powerful programming language. It offers programmers the rare ability to focus mainly on the solution, and less on adhering to a strict syntax. We will be employing Python 3 and the [Flask](http://flask.pocoo.org/) framework for the server-side scripting. The @app.route decorator will be used to map the URL to functions in the flask application.
 + [**Docker**](https://www.docker.com/) - Docker is a tool for clean deployment. It uses containerization to manage and encapsulate an applications dependencies and its execution.
 + [**Heroku**](https://www.heroku.com/) - Heroku is a platform as a service (PaaS). It offers a high-level cloud server based on a managed container system with integrated data services for deploying and running modern apps. 
+
+## Implementation
+
+(impl. stuff here)
+
+## How To Run
+
+(how to run here)
 
 ## References
 
