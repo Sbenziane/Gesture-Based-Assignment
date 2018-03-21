@@ -36,7 +36,7 @@ Now we had settled the orientation of our app, we needed to brainstorm and figur
 
 Myo armbands are compatible with mulitiple languages including C# and JavaScript, which were particularly interested in.
 
-+ **C# UWP** - The game could be made with C# and Xaml using the [canvas](https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.canvas) element. The application could be ther be run on any recent Windows platform.
++ **C# UWP** - The game could be made with C# and Xaml using the [canvas](https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.canvas) element. The application could be then be run on any recent Windows platform.
 + **C# Unity** - Using Unity with C# would be a suitable choice to make a game. [Unity](https://unity3d.com) is a efficient, cross platform game engine that supports both 2D and 3D graphics. The unity app could then be exported and uploaded to the [Myo Market](https://market.myo.com/).
 + **JavaScript** - JavaScript would not be as optimal for game making. However, a powerful game engine may not needed for such a simplistic game. A HTML5 canvas would probably suffice. If needed a JavaScript game framework could be applied in making  the game, e.g. [Phaser JS](https://phaser.io/). Most notably, the application would be easily accessible - more than that of a Myo Market application. Instead of downloading and installing software, a simple HTTP request in a favoured browser would bring a user to the game. 
 
