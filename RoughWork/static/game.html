@@ -31,9 +31,9 @@
 		Myo.on('connected', function(){
             myMyo = this;
 		});
-        /*
         Myo.on('vector', _.throttle(function(vector){
-			$('.x').text(vector.x);
+            /*
+            $('.x').text(vector.x);
 			$('.y').text(vector.y);
 			$('.theta').text(Math.round(1000*vector.theta)/1000);
 
@@ -47,8 +47,9 @@
 				transform : "rotate(" + (-vector.theta*180) + "deg)"
 			});
 
-			gimbleLockDetection(vector);
-		}, 50));*/
+            gimbleLockDetection(vector);*/
+            console.log("Data received");
+		}, 50));
 
         function draw_game(x, y, a, w_r, h_r){
             // Clear Canvas and draw game.
