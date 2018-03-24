@@ -12,25 +12,30 @@
         Your browser does not support the HTML5 canvas tag.</canvas>
     <p id="demo"></p>
         <script>
+        var on = false;
         var imgData;
         var canvas = document.getElementById("myCanvas"), ctx = canvas.getContext("2d"), canvas_width = canvas.width, canvas_height = canvas.height;
-        var start_x = 50, start_y = 450, end_x = 680, end_y = 450;
+        var start_x = 50, start_y = 450, end_x = 680, end_y = 450, start_y_t = 50;
         var hoop_w_r = 20, hoop_h_r = 5; 
         ctx.lineWidth = 4;
         ctx.strokeStyle = "#020202";
-            
-        // Set up game.
-        // Draw wire and copy image data of just the wire in the canvas.
-        // Then clear to draw properly. 
-        draw_wire();
-        get_img_data();
-        draw_game(start_x, start_y, 192.6, hoop_w_r, hoop_h_r);
         
         Myo.connect();
 
 		Myo.on('connected', function(){
             myMyo = this;
 		});
+        // Set up game.
+        // Draw wire and copy image data of just the wire in the canvas.
+        // Then clear to draw properly. 
+        Myo.on('fist', function(){
+            on = true;
+			this.zeroOrientation();
+		});
+        draw_wire();
+        get_img_data();
+        draw_game(start_x, start_y, 0, hoop_w_r, hoop_h_r);
+        
         Myo.on('vector', _.throttle(function(vector){
             /*
             $('.x').text(vector.x);
@@ -48,15 +53,32 @@
 			});
 
             gimbleLockDetection(vector);*/
-            console.log("Data received");
-		}, 50));
+            if(on){
+                console.log("Data received");
+                xPos = (vector.x * -500) + start_x;
+                yPos = (vector.y * 500) + start_y_t;
 
+                if(xPos < 0)
+                    xPos = 0;
+                else if(xPos > canvas_width)
+                    xPos = canvas_width;
+
+                if(yPos < 0)
+                    yPos = 0
+                else if(yPos > canvas_height)
+                    yPos = canvas_height;
+
+                console.log("x :" + xPos);
+                draw_game(xPos, yPos, 0, hoop_w_r, hoop_h_r);
+            }
+		}, 50));
         function draw_game(x, y, a, w_r, h_r){
             // Clear Canvas and draw game.
             ctx.clearRect(0, 0, canvas_width, canvas_height);
             extra_graphics();
             draw_wire();
-            draw_hoop(x, y, a, w_r, h_r);
+            if(on)
+                draw_hoop(x, y, a, w_r, h_r);
         }
         function get_img_data(){
             // Get canvas data.
@@ -68,6 +90,9 @@
         function draw_hoop(x1, y1, radians, w, h){
             // Canvas oval.
             // Adapted from: http://scienceprimer.com/draw-oval-html5-canvas
+            ctx.save()
+            ctx.translate(0, canvas_height);
+            ctx.scale(1, -1);
             ctx.beginPath();
             /*for (var i = 0 * Math.PI; i < 2 * Math.PI; i += 0.01 ) {
                 xPos = 50 - (5 * Math.sin(i)) * Math.sin(0 * Math.PI) + (20 * Math.cos(i)) * Math.cos(0 * Math.PI);
@@ -100,6 +125,7 @@
             //*/
             ctx.stroke();
             ctx.closePath();
+            ctx.restore();
         }
         function draw_wire(){
             // Drawn with Bezier Curves:
@@ -120,10 +146,10 @@
             ctx.stroke();
             ctx.closePath();
         }
-        function wire_holder(x, y, w, h, c){
-            
-            var w2 = w/2, h2 = h/2, x1 = x - w2, y1 = y + h, x2 = x + w2;
-
+        function wire_holder(x, y, w, h, c){ 
+            var w2 = w/2, h2 = h/2, 
+                x1 = x - w2, y1 = y + h, 
+                x2 = x + w2;
             // Body of cylinder.
             ctx.beginPath();
             ctx.moveTo(x1, y);
@@ -140,8 +166,7 @@
             ctx.bezierCurveTo(x2,y1,x,y+c,x1,y1);
             ctx.fill();
             ctx.stroke();
-            ctx.closePath();
-            
+            ctx.closePath();   
             // Oval on top.
             ctx.beginPath();
             ctx.ellipse(x, y, h2, w2, 90 * Math.PI/180, 0, 2 * Math.PI);
