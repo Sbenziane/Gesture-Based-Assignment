@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Narrow Jumbotron Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="static/css/jumbotron-narrow.css" rel="stylesheet">
+
+    <script src="static/js/angular.js"></script>
+
+    <script>
+        angular.module('myApp', [])
+            .controller('HomeCtrl', function($scope, $http) {
+			
+				$scope.info = {};
+				
+				$scope.showAdd = true;
+			
+				$scope.showscores = function(){
+					$http({
+						method: 'POST',
+						url: '/getScoreList',
+					}).then(function(response) {
+						$scope.scores = response.data;
+						console.log('mm',$scope.scores);
+					}, function(error) {
+						console.log(error);
+					});
+				}
+				
+				$scope.addScore = function(){
+					$http({
+						method: 'POST',
+						url: '/addScore',
+						data: {info:$scope.info}
+					}).then(function(response) {
+						$scope.showscores();
+						$('#addPopUp').modal('hide')
+						$scope.info = {}
+					}, function(error) {
+						console.log(error);
+					});
+				}
+		
+				$scope.showAddPopUp = function(){
+					$scope.showAdd = true;
+					$scope.info = {};
+					$('#addPopUp').modal('show')
+				}
+				
+				$scope.showRunPopUp = function(id){
+				
+					$scope.info.id = id;
+					$scope.run = {};
+					
+					$http({
+						method: 'POST',
+						url: '/getScore',
+						data: {id:$scope.info.id}
+					}).then(function(response) {
+						console.log(response);
+						$scope.run = response.data;
+						$scope.run.isRoot = false;
+						$('#runPopUp').modal('show');
+					}, function(error) {
+						console.log(error);
+					});
+				}
+				
+				$scope.executeCommand = function(){
+					console.log($scope.run);
+					$http({
+						method: 'POST',
+						url: '/execute',
+						data: {info:$scope.run}
+					}).then(function(response) {
+						console.log(response);
+						$scope.run.response = response.data.message;
+					}, function(error) {
+						console.log(error);
+					});
+				}
+				
+				$scope.showscores();
+            })
+    </script>
+
+
+</head>
+
+<body ng-controller="HomeCtrl">
+
+    <div class="container">
+        <div class="header clearfix">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="active"><a href="#" data-toggle="modal" ng-click="showAddPopUp()" >Add</a></li>
+                </ul>
+            </nav>
+            <h3 class="text-muted">Remote Test Exec Manager</h3>
+        </div>
+
+        <div class="bs-example" data-example-id="panel-without-body-with-table">
+            <div class="panel panel-default">
+                <div class="panel-heading">Score list</div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Username</th>
+                            <th>Score</th>
+							<th></th>
+							<th></th>
+							<th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="score in scores track by $index">
+                            <th scope="row">{{'{{$index+1}}'}}</th>
+                            <td>{{ '{{score.username}}' }}</td>
+                            <td>{{ '{{score.score}}' }}</td>
+							<td><span style="cursor:pointer;color:#3c763d;" ng-click="showRunPopUp(score.id)" class="glyphicon glyphicon-play" aria-hidden="true"></span></td>
+                        </tr>
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="addPopUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel" >Add score info</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="txtUser" class="control-label">Username:</label>
+                            <input type="text" class="form-control" ng-model="info.username" id="txtUser">
+                        </div>
+                        <div class="form-group">
+                            <label for="txtIP" class="control-label">Score:</label>
+                            <input type="text" class="form-control" ng-model="info.ip" id="txtIP">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"  class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button ng-show="showAdd" id="btnAdd" ng-click="addScore()" type="button" class="btn btn-primary">Add score</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	 <div class="modal fade" id="runPopUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel" >Remote execution interface</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="txtUsername" class="control-label">Username:</label>
+                            <input type="text" class="form-control" ng-model="run.username" id="txtRunUsername">
+                        </div>
+                        <div class="form-group">
+                            <label for="txtScore" class="control-label">Score:</label>
+                            <input type="text" class="form-control" ng-model="run.password" id="txtRunScore">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"  class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button  id="btnExecute" ng-click="executeCommand()" type="button" class="btn btn-primary">Execute</button>
+			
+					
+                </div>
+            </div>
+        </div>
+			
+    </div>
+	
+
+    <script src="static/js/jquery.min.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
