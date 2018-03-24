@@ -1,51 +1,102 @@
 <html>
+    <head>
+        <script>global=window</script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+        <script src='js/myo.js'></script>
+        <script src='js/vector.myo.js'></script>
+    </head>
     <body>
     <canvas id="myCanvas" width="735" height="500" style="border:1px solid #d3d3d3;">
         Your browser does not support the HTML5 canvas tag.</canvas>
     <p id="demo"></p>
         <script>
         var imgData;
-        var canvas = document.getElementById("myCanvas");
-        var ctx = canvas.getContext("2d");
-        var canvas_width = canvas.width;
-        var canvas_height = canvas.height;
-        var start_x = 50;
-        var start_y = 450;
-        var end_x = 680;
-        var end_y = 450;
+        var canvas = document.getElementById("myCanvas"), ctx = canvas.getContext("2d"), canvas_width = canvas.width, canvas_height = canvas.height;
+        var start_x = 50, start_y = 450, end_x = 680, end_y = 450;
+        var hoop_w_r = 20, hoop_h_r = 5; 
         ctx.lineWidth = 4;
         ctx.strokeStyle = "#020202";
+            
         // Set up game.
         // Draw wire and copy image data of just the wire in the canvas.
         // Then clear to draw properly. 
         draw_wire();
-        getImgData();
-        ctx.clearRect(0, 0, canvas_width, canvas_height);
+        get_img_data();
+        draw_game(start_x, start_y, 192.6, hoop_w_r, hoop_h_r);
+        
+        Myo.connect();
 
-        extra_graphics();
-        draw_wire();
-        draw_hoop()
+		Myo.on('connected', function(){
+            myMyo = this;
+		});
+        /*
+        Myo.on('vector', _.throttle(function(vector){
+			$('.x').text(vector.x);
+			$('.y').text(vector.y);
+			$('.theta').text(Math.round(1000*vector.theta)/1000);
 
-        function getImgData(){
+			//update crosshair
+			$('.lineX').css({left : 50 + 50*vector.x + "%"});
+			$('.lineY').css({top : 50 - 50*vector.y + "%"});
+			
+			$('.thetaCircle').css({
+				left : 50 + 50*vector.x + "%",
+				top : 50 - 50*vector.y + "%",
+				transform : "rotate(" + (-vector.theta*180) + "deg)"
+			});
+
+			gimbleLockDetection(vector);
+		}, 50));*/
+
+        function draw_game(x, y, a, w_r, h_r){
+            // Clear Canvas and draw game.
+            ctx.clearRect(0, 0, canvas_width, canvas_height);
+            extra_graphics();
+            draw_wire();
+            draw_hoop(x, y, a, w_r, h_r);
+        }
+        function get_img_data(){
             // Get canvas data.
             imgData = ctx.getImageData(0,0, canvas_width, canvas_height);
-            console.log(imgData);
             // Get the first pixel at the beginning of wire path - row:449, col:50.
-            startWirePixel = imgData.data[((start_y - 1) * (imgData.width * 4)) + ((start_x - 1) * 4)];
+            var startWirePixel = imgData.data[((start_y - 1) * (imgData.width * 4)) + ((start_x - 1) * 4)];
             document.getElementById("demo").innerHTML = "Colour of pixel [" + (start_y - 1) + "][" + (start_x - 1) + "] : " + startWirePixel + " (ranges from 0-255)";
         }
-        function draw_hoop(){
+        function draw_hoop(x1, y1, radians, w, h){
             // Canvas oval.
             // Adapted from: http://scienceprimer.com/draw-oval-html5-canvas
             ctx.beginPath();
-            for (var i = 0 * Math.PI; i < 2 * Math.PI; i += 0.01 ) {
+            /*for (var i = 0 * Math.PI; i < 2 * Math.PI; i += 0.01 ) {
                 xPos = 50 - (5 * Math.sin(i)) * Math.sin(0 * Math.PI) + (20 * Math.cos(i)) * Math.cos(0 * Math.PI);
                 yPos = 450 + (20 * Math.cos(i)) * Math.sin(0 * Math.PI) + (5 * Math.sin(i)) * Math.cos(0 * Math.PI);
+                console.log("x: "+xPos);
+                console.log("y: "+yPos);
                 if (i == 0)
                     ctx.moveTo(xPos, yPos);
                 else
                     ctx.lineTo(xPos, yPos);
-            }
+            }*/
+
+            // Ref: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/ellipse
+            // Easier rotate with ellipse function.
+            d1 = radians; // Calc radians to degrees here. (d1 * -360)
+            ctx.ellipse(x1, y1, h, w, (d1 + 90) * Math.PI/180, 0, 2 * Math.PI);
+            // Calculate points on far edges for collsions.
+            var d2 = (d1) * Math.PI / 180,
+                d3 = (d1-180) * Math.PI / 180,
+                x2 = x1 + w * Math.cos(d2),
+                y2 = y1 + w * Math.sin(d2),
+                x3 = x1 + w * Math.cos(d3),
+                y3 = y1 + w * Math.sin(d3);
+            
+            // Draw line for testing.
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x3, y3);
+            //*/
             ctx.stroke();
             ctx.closePath();
         }
@@ -69,11 +120,8 @@
             ctx.closePath();
         }
         function wire_holder(x, y, w, h, c){
-            w2 = w/2;
-            h2 = h/2;
-            x1 = x - w2;
-            y1 = y + h;
-            x2 = x + w2;
+            
+            var w2 = w/2, h2 = h/2, x1 = x - w2, y1 = y + h, x2 = x + w2;
 
             // Body of cylinder.
             ctx.beginPath();
@@ -95,14 +143,7 @@
             
             // Oval on top.
             ctx.beginPath();
-            for (var i = 0 * Math.PI; i < 2 * Math.PI; i += 0.01 ) {
-                xPos = x - (h2 * Math.sin(i)) * Math.sin(0 * Math.PI) + (w2 * Math.cos(i)) * Math.cos(0 * Math.PI);
-                yPos = y + (w2 * Math.cos(i)) * Math.sin(0 * Math.PI) + (h2 * Math.sin(i)) * Math.cos(0 * Math.PI);
-                if (i == 0)
-                    ctx.moveTo(xPos, yPos);
-                else
-                    ctx.lineTo(xPos, yPos);
-            }
+            ctx.ellipse(x, y, h2, w2, 90 * Math.PI/180, 0, 2 * Math.PI);
             ctx.fillStyle = "#f28b43";
             ctx.fill();
             ctx.stroke();
