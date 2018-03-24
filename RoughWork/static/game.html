@@ -54,9 +54,7 @@
 
             gimbleLockDetection(vector);*/
             if(on){
-                console.log("Data received");
-                xPos = (vector.x * -500) + start_x;
-                yPos = (vector.y * 500) + start_y_t;
+                var xPos = (vector.x * 500) + start_x, yPos = (vector.y * 500) + start_y_t, zPos = vector.theta * 360;
 
                 if(xPos < 0)
                     xPos = 0;
@@ -68,8 +66,7 @@
                 else if(yPos > canvas_height)
                     yPos = canvas_height;
 
-                console.log("x :" + xPos);
-                draw_game(xPos, yPos, 0, hoop_w_r, hoop_h_r);
+                draw_game(xPos, yPos, zPos, hoop_w_r, hoop_h_r);
             }
 		}, 50));
         function draw_game(x, y, a, w_r, h_r){
@@ -94,16 +91,6 @@
             ctx.translate(0, canvas_height);
             ctx.scale(1, -1);
             ctx.beginPath();
-            /*for (var i = 0 * Math.PI; i < 2 * Math.PI; i += 0.01 ) {
-                xPos = 50 - (5 * Math.sin(i)) * Math.sin(0 * Math.PI) + (20 * Math.cos(i)) * Math.cos(0 * Math.PI);
-                yPos = 450 + (20 * Math.cos(i)) * Math.sin(0 * Math.PI) + (5 * Math.sin(i)) * Math.cos(0 * Math.PI);
-                console.log("x: "+xPos);
-                console.log("y: "+yPos);
-                if (i == 0)
-                    ctx.moveTo(xPos, yPos);
-                else
-                    ctx.lineTo(xPos, yPos);
-            }*/
 
             // Ref: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/ellipse
             // Easier rotate with ellipse function.
