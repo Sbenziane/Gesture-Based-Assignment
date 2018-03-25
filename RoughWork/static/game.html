@@ -8,75 +8,81 @@
         <script src='js/vector.myo.js'></script>
     </head>
     <body>
-    <canvas id="myCanvas" width="735" height="500" style="border:1px solid #d3d3d3;">
+    <canvas id="game" width="735" height="500" style="border:1px solid #d3d3d3;">
         Your browser does not support the HTML5 canvas tag.</canvas>
+    <canvas id="game_helper" width="735" height="500" style="border:1px solid #d3d3d3;"></canvas>
     <p id="demo"></p>
         <script>
+            //style="/*display:none*/"
         var on = false;
-        var imgData;
-        var canvas = document.getElementById("myCanvas"), ctx = canvas.getContext("2d"), canvas_width = canvas.width, canvas_height = canvas.height;
-        var start_x = 50, start_y = 450, end_x = 680, end_y = 450, start_y_t = 50;
-        var hoop_w_r = 20, hoop_h_r = 5; 
-        ctx.lineWidth = 4;
+        var wire_data;
+        var canvas = document.getElementById("game"), ctx = canvas.getContext("2d"), canvas_width = canvas.width, canvas_height = canvas.height;
+        var helper_canvas = document.getElementById("game_helper"), h_ctx = helper_canvas.getContext("2d");
+        var start_x = 50, start_y = 50, end_x = 680, end_y = 450;
+        var hoop_w_r = 20, hoop_h_r = 5, hoop_zero_l = 0 + hoop_h_r, hoop_y_l = canvas_height - hoop_w_r, hoop_x_l = canvas_width - hoop_w_r; 
+        var pie_by_2 = 2 * Math.PI, pie_div_180 = Math.PI / 180; 
+        ctx.lineWidth = 3;
         ctx.strokeStyle = "#020202";
-
+        h_ctx.lineWidth = 3;
+        h_ctx.strokeStyle = "#020202";
         ctx.translate(0, canvas_height);
         ctx.scale(1, -1);
+        h_ctx.translate(0, canvas_height);
+        h_ctx.scale(1, -1);
         
         Myo.connect();
 
-		Myo.on('connected', function(){
-            myMyo = this;
-		});
         // Set up game.
         // Draw wire and copy image data of just the wire in the canvas.
-        // Then clear to draw properly. 
+        // Then clear to draw properly.      
+        get_game_data(h_ctx);
+        new_game();
+        
+        Myo.on('connected', function(){
+            myMyo = this;
+		});
         Myo.on('fist', function(){
             on = true;
 			this.zeroOrientation();
 		});
-        draw_wire();
-        get_img_data();
-        draw_game(start_x, start_y, 0, hoop_w_r, hoop_h_r);
-        
         Myo.on('vector', _.throttle(function(vector){
             if(on){
-                var xPos = (vector.x * 500) + start_x, yPos = (vector.y * 500) + start_y_t, zPos = vector.theta * 360;
-
-                if(xPos < 0)
-                    xPos = 0;
-                else if(xPos > canvas_width)
-                    xPos = canvas_width;
-
-                if(yPos < 0)
-                    yPos = 0
-                else if(yPos > canvas_height)
-                    yPos = canvas_height;
-
+                var xPos = (vector.x * 500) + start_x, yPos = (vector.y * 500) + start_y, zPos = vector.theta * 360;
+                if(xPos < hoop_zero_l) 
+                    xPos = hoop_zero_l;
+                else if(xPos > hoop_x_l) 
+                    xPos = hoop_x_l;
+                if(yPos < hoop_zero_l) 
+                    yPos = hoop_zero_l;
+                else if(yPos > hoop_y_l) 
+                    yPos = hoop_y_l;
                 draw_game(xPos, yPos, zPos, hoop_w_r, hoop_h_r);
             }
 		}, 50));
+        function new_game(){
+            on = false;
+            draw_game(start_x, start_y, 0, hoop_w_r, hoop_h_r);
+        }
         function draw_game(x, y, a, w_r, h_r){
             // Clear Canvas and draw game.
             ctx.clearRect(0, 0, canvas_width, canvas_height);
             //extra_graphics();
-            draw_wire();
+            draw_wire(ctx);
             if(on)
                 draw_hoop(x, y, a, w_r, h_r);
         }
-        function get_img_data(){
+        function get_img_data(c){
             // Get canvas data.
-            imgData = ctx.getImageData(0,0, canvas_width, canvas_height);
-            // Get the first pixel at the beginning of wire path - row:449, col:50.
-            var startWirePixel = imgData.data[((start_y - 1) * (imgData.width * 4)) + ((start_x - 1) * 4)];
-            document.getElementById("demo").innerHTML = "Colour of pixel [" + (start_y - 1) + "][" + (start_x - 1) + "] : " + startWirePixel + " (ranges from 0-255)";
+            return c.getImageData(0,0, canvas_width, canvas_height);
         }
-        function draw_hoop(x1, y1, radians, w, h){
+        function draw_hoop(x1, y1, d1, w, h){
             ctx.beginPath();
             // Ref: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/ellipse
             // Easier rotate with ellipse function.
-            d1 = radians; // Calc radians to degrees here. (d1 * -360)
             ctx.ellipse(x1, y1, h, w, (d1 + 90) * Math.PI/180, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.closePath();
+
             // Calculate points on far edges for collsions.
             var d2 = (d1) * Math.PI / 180,
                 d3 = (d1-180) * Math.PI / 180,
@@ -85,42 +91,59 @@
                 x3 = x1 + w * Math.cos(d3),
                 y3 = y1 + w * Math.sin(d3);
             
-            /* Draw line for testing.
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x3, y3);
-            //*/
-            ctx.stroke();
-            ctx.closePath();
-            
-            // AND move math round to here
-            var p_1 = imgData.data[(Math.round(canvas_height - y3) * (imgData.width * 4)) + (Math.round(x3) * 4)],
-                p_2 = imgData.data[(Math.round(canvas_height - y2) * (imgData.width * 4)) + (Math.round(x2) * 4)];
+            // Check if in the ImageData object taken on at beginning of script.
+            var p_1 = wire_data.data[(Math.round(canvas_height - y3) * (wire_data.width * 4)) + (Math.round(x3) * 4)],
+                p_2 = wire_data.data[(Math.round(canvas_height - y2) * (wire_data.width * 4)) + (Math.round(x2) * 4)];
 
-            if(p_1 != 0 || p_2 != 0){
-                on = false;
-                draw_game(start_x, start_y, 0, hoop_w_r, hoop_h_r);
+            if((p_1 != 0 && p_1 != undefined) || (p_2 != 0 && p_2 != undefined)) new_game();
+
+            // Check if out of bounds.
+            if(hoop_off_wire(x1, y1, x2, y2, x3, y3)) new_game();
+        }
+        function hoop_off_wire(x1, y1, x2, y2, x3, y3){
+            // Check points in the hidden canvas with only a wire on it.
+            var res2 = h_ctx.isPointInPath(x2, canvas_height - y2), res3 = h_ctx.isPointInPath(x3, canvas_height - y3);
+            console.log("Is 1st point in path: " + res2);
+            console.log("Is 2nd point in path: " + res3);
+            
+            if(res2 || res3){
+                if(res2 && res3) return false;
+                else return true;
+            }else{
+                if(h_ctx.isPointInPath(x1, y1)) return false;
+                else return true;
             }
         }
-        function draw_wire(){
+        function draw_wire(c){
             // Drawn with Bezier Curves:
             // https://www.w3schools.com/tags/canvas_beziercurveto.asp
-            ctx.beginPath();
-            ctx.moveTo(50, 50);
-            ctx.bezierCurveTo(20, 20, 100, 100, 100, 100);
-            ctx.bezierCurveTo(120, 120, 50, 200, 100, 200);
-            ctx.bezierCurveTo(220, 220, 75, 100, 150, 150);
-            ctx.bezierCurveTo(320, 320, 50, 250, 200, 400);
-            ctx.bezierCurveTo(300, 500, 100, 250, 300, 250);
-            ctx.bezierCurveTo(300, -50, 300, 75, 350, 100);
-            ctx.bezierCurveTo(600, 250, 150, 250, 400, 300);
-            ctx.bezierCurveTo(600, 350, 350, 150, 600, 100);
-            ctx.bezierCurveTo(650, 100, 500, 300, 600, 250);
-            ctx.bezierCurveTo(700, 190, 550, 400, 675, 250);
-            ctx.bezierCurveTo(725, 200, 700, 300, 680, 450);
-            ctx.stroke();
-            ctx.closePath();
+            c.beginPath();
+            c.moveTo(50, 50);
+            c.bezierCurveTo(50, 50, 50, 200, 40, 300);
+            c.bezierCurveTo(40, 300, 30, 400, 70, 350);
+            c.bezierCurveTo(70, 350, 90, 325, 80, 300);
+            c.bezierCurveTo(75, 290, 60, 240, 100, 240);
+            c.bezierCurveTo(100, 240, 150, 240, 120, 300);
+            c.bezierCurveTo(120, 300, 90, 350, 150, 300);
+            c.bezierCurveTo(150, 300, 180, 275, 170, 250);
+            c.bezierCurveTo(130, 180, 80, 125, 110, 130);
+            c.bezierCurveTo(110, 130, 130, 135, 145, 120);
+            c.bezierCurveTo(280, 0, 190, 190, 210, 300);
+            c.bezierCurveTo(210, 300, 220, 350, 230, 300);
+            c.bezierCurveTo(230, 300, 250, 150, 280, 200);
+            c.bezierCurveTo(290, 220, 300, 260, 280, 300);
+            c.bezierCurveTo(280, 300, 250, 360, 300, 380);
+            c.bezierCurveTo(300, 380, 350, 400, 400, 380);
+            c.bezierCurveTo(440, 360, 420, 320, 380, 280);
+            c.bezierCurveTo(320, 220, 340, 240, 400, 220);
+            c.bezierCurveTo(440, 200, 485, 415, 505, 365);
+            c.bezierCurveTo(515, 325, 490, 200, 500, 50);
+            c.stroke();
+            c.closePath();
+        }
+        function get_game_data(c){
+            draw_wire(c);
+            wire_data = get_img_data(h_ctx);
         }
         function wire_holder(x, y, w, h, c){ 
             var w2 = w/2, h2 = h/2, 
