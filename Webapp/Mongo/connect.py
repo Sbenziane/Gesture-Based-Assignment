@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, json, jsonify
 from flask_pymongo import PyMongo
 
 app = Flask(__name__)
@@ -10,16 +10,17 @@ mongo = PyMongo(app)
 
 @app.route('/')
 def index():
-    users = mongo.db.users
-    results = users.find()
+     return app.send_static_file('game.html')
+    #users = mongo.db.users
+    #results = users.find()
 
-    output = ''
-    for r in results:
-        old = str(r['score'])
-        score = old[:-2] + ':' + old[-2:]
-        output += r['username'] + '  ' + score + '<br>'
+    #output = ''
+    #for r in results:
+        #old = str(r['score'])
+        #score = old[:-2] + ':' + old[-2:]
+        #output += r['username'] + '  ' + score + '<br>'
 
-    return output
+    #return output
  
 
 @app.route('/add')
@@ -58,6 +59,12 @@ def delete():
     ay = user.find_one({'username': 'ay'})
     user.remove(ay)
     return "removed"
+
+@app.route('/save', methods=['POST'])
+def save():
+    scoreData =  request.json
+    user = mongo.db.users
+    user.insert(scoreData)
 
 if __name__ == '__main__':
     app.run(debug=True)
