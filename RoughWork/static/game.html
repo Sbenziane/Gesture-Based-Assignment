@@ -10,32 +10,40 @@
     <body>
     <canvas id="game" width="735" height="500" style="border:1px solid #d3d3d3;">
         Your browser does not support the HTML5 canvas tag.</canvas>
-    <canvas id="game_helper" width="735" height="500" style="border:1px solid #d3d3d3;"></canvas>
+    <canvas id="game_wire" width="735" height="500" style="display:none"></canvas>
+    <canvas id="game_start_box" width="735" height="500" style="border:1px solid #d3d3d3;"></canvas>
+    <canvas id="game_end_box" width="735" height="500" style="display:none"></canvas>
     <p id="demo"></p>
         <script>
             //style="/*display:none*/"
         var on = false;
-        var wire_data;
+        var wire_data, start_box_data, end_box_data;
         var canvas = document.getElementById("game"), ctx = canvas.getContext("2d"), canvas_width = canvas.width, canvas_height = canvas.height;
-        var helper_canvas = document.getElementById("game_helper"), h_ctx = helper_canvas.getContext("2d");
+        var w_c = document.getElementById("game_wire"), w_ctx = w_c.getContext("2d");
+        var s_c = document.getElementById("game_start_box"), s_ctx = s_c.getContext("2d");
         var start_x = 50, start_y = 50, end_x = 680, end_y = 450;
-        var hoop_w_r = 20, hoop_h_r = 5, hoop_zero_l = 0 + hoop_h_r, hoop_y_l = canvas_height - hoop_w_r, hoop_x_l = canvas_width - hoop_w_r; 
+        var hoop_w_r = 20, hoop_h_r = 5, hoop_zero_l = 0 + hoop_w_r, hoop_y_l = canvas_height - hoop_w_r, hoop_x_l = canvas_width - hoop_w_r; 
+        var start_box = {x: start_x - hoop_w_r, y: start_y - hoop_w_r, w: hoop_w_r*2, h: hoop_h_r*2};
         var pie_by_2 = 2 * Math.PI, pie_div_180 = Math.PI / 180; 
         ctx.lineWidth = 3;
         ctx.strokeStyle = "#020202";
-        h_ctx.lineWidth = 3;
-        h_ctx.strokeStyle = "#020202";
+        w_ctx.lineWidth = 3;
+        w_ctx.strokeStyle = "#020202";
+        s_ctx.lineWidth = 3;
+        s_ctx.strokeStyle = "#020202";
         ctx.translate(0, canvas_height);
         ctx.scale(1, -1);
-        h_ctx.translate(0, canvas_height);
-        h_ctx.scale(1, -1);
+        w_ctx.translate(0, canvas_height);
+        w_ctx.scale(1, -1);
+        s_ctx.translate(0, canvas_height);
+        s_ctx.scale(1, -1);
         
         Myo.connect();
 
         // Set up game.
         // Draw wire and copy image data of just the wire in the canvas.
         // Then clear to draw properly.      
-        get_game_data(h_ctx);
+        get_game_data();
         new_game();
         
         Myo.on('connected', function(){
@@ -102,17 +110,24 @@
         }
         function hoop_off_wire(x1, y1, x2, y2, x3, y3){
             // Check points in the hidden canvas with only a wire on it.
-            var res2 = h_ctx.isPointInPath(x2, canvas_height - y2), res3 = h_ctx.isPointInPath(x3, canvas_height - y3);
-            console.log("Is 1st point in path: " + res2);
-            console.log("Is 2nd point in path: " + res3);
+            y1 = canvas_height - y1, y2 = canvas_height - y2, y3 = canvas_height - y3;
+            var res2 = w_ctx.isPointInPath(x2, y2), res3 = w_ctx.isPointInPath(x3, y3);
             
-            if(res2 || res3){
-                if(res2 && res3) return false;
-                else return true;
+            if(s_ctx.isPointInPath(x1, y1) || s_ctx.isPointInPath(x2, y2) || s_ctx.isPointInPath(x2, y2)) {
+                return false;
+            }else if(res2 || res3){
+                if(res2 && res3) return true;
+                else return false;
             }else{
-                if(h_ctx.isPointInPath(x1, y1)) return false;
+                if(w_ctx.isPointInPath(x1, y1)) return false;
                 else return true;
             }
+        }
+        function draw_collision_box(c, x, y){
+            c.beginPath();
+            c.rect(start_x-hoop_w_r, start_y-hoop_w_r, hoop_w_r*2, hoop_w_r*2);
+            c.stroke();
+            c.closePath();
         }
         function draw_wire(c){
             // Drawn with Bezier Curves:
@@ -141,9 +156,11 @@
             c.stroke();
             c.closePath();
         }
-        function get_game_data(c){
-            draw_wire(c);
-            wire_data = get_img_data(h_ctx);
+        function get_game_data(){
+            draw_wire(w_ctx);
+            wire_data = get_img_data(w_ctx);
+            draw_collision_box(s_ctx, start_x, start_y);
+            start_box_data = get_img_data(s_ctx);
         }
         function wire_holder(x, y, w, h, c){ 
             var w2 = w/2, h2 = h/2, 
