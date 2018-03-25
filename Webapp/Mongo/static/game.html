@@ -79,14 +79,23 @@ crossorigin="anonymous">
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
     }
 
+    var ipadd;
+    // Get IP address
+    $.getJSON('//freegeoip.net/json/?callback=?', function(data) {
+        ipadd = data.ip;
+    });
+
       // Button click event
   $('#saveScore').click(function ( event ){
     event.preventDefault(); // Cancels default action of click - https://api.jquery.com/event.preventdefault/
      
-    // File name and data in json
+    console.log("IP: " + this.ipadd);
+
+    // User's data in json
     var scoreData = {
-      username: "newuser111",
-      score: document.getElementById("savedAt").innerHTML
+        username: "newuser111",
+        ipaddress: String(ipadd),
+        score: document.getElementById("savedAt").innerHTML
     }
     console.log(scoreData)
     scoreData = JSON.stringify(scoreData); // Turns whole json object into string
