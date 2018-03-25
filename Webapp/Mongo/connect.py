@@ -62,7 +62,7 @@ def delete():
 
 @app.route('/save', methods=['POST'])
 def save():
-    scoreData =  request.json
+    scoreData = request.json
     user = mongo.db.users
     user.insert(scoreData)
 
