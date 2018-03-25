@@ -19,6 +19,9 @@
         var hoop_w_r = 20, hoop_h_r = 5; 
         ctx.lineWidth = 4;
         ctx.strokeStyle = "#020202";
+
+        ctx.translate(0, canvas_height);
+        ctx.scale(1, -1);
         
         Myo.connect();
 
@@ -37,22 +40,6 @@
         draw_game(start_x, start_y, 0, hoop_w_r, hoop_h_r);
         
         Myo.on('vector', _.throttle(function(vector){
-            /*
-            $('.x').text(vector.x);
-			$('.y').text(vector.y);
-			$('.theta').text(Math.round(1000*vector.theta)/1000);
-
-			//update crosshair
-			$('.lineX').css({left : 50 + 50*vector.x + "%"});
-			$('.lineY').css({top : 50 - 50*vector.y + "%"});
-			
-			$('.thetaCircle').css({
-				left : 50 + 50*vector.x + "%",
-				top : 50 - 50*vector.y + "%",
-				transform : "rotate(" + (-vector.theta*180) + "deg)"
-			});
-
-            gimbleLockDetection(vector);*/
             if(on){
                 var xPos = (vector.x * 500) + start_x, yPos = (vector.y * 500) + start_y_t, zPos = vector.theta * 360;
 
@@ -72,7 +59,7 @@
         function draw_game(x, y, a, w_r, h_r){
             // Clear Canvas and draw game.
             ctx.clearRect(0, 0, canvas_width, canvas_height);
-            extra_graphics();
+            //extra_graphics();
             draw_wire();
             if(on)
                 draw_hoop(x, y, a, w_r, h_r);
@@ -85,13 +72,7 @@
             document.getElementById("demo").innerHTML = "Colour of pixel [" + (start_y - 1) + "][" + (start_x - 1) + "] : " + startWirePixel + " (ranges from 0-255)";
         }
         function draw_hoop(x1, y1, radians, w, h){
-            // Canvas oval.
-            // Adapted from: http://scienceprimer.com/draw-oval-html5-canvas
-            ctx.save()
-            ctx.translate(0, canvas_height);
-            ctx.scale(1, -1);
             ctx.beginPath();
-
             // Ref: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/ellipse
             // Easier rotate with ellipse function.
             d1 = radians; // Calc radians to degrees here. (d1 * -360)
@@ -104,7 +85,7 @@
                 x3 = x1 + w * Math.cos(d3),
                 y3 = y1 + w * Math.sin(d3);
             
-            // Draw line for testing.
+            /* Draw line for testing.
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
             ctx.moveTo(x1, y1);
@@ -112,13 +93,21 @@
             //*/
             ctx.stroke();
             ctx.closePath();
-            ctx.restore();
+            
+            // AND move math round to here
+            var p_1 = imgData.data[(Math.round(canvas_height - y3) * (imgData.width * 4)) + (Math.round(x3) * 4)],
+                p_2 = imgData.data[(Math.round(canvas_height - y2) * (imgData.width * 4)) + (Math.round(x2) * 4)];
+
+            if(p_1 != 0 || p_2 != 0){
+                on = false;
+                draw_game(start_x, start_y, 0, hoop_w_r, hoop_h_r);
+            }
         }
         function draw_wire(){
             // Drawn with Bezier Curves:
             // https://www.w3schools.com/tags/canvas_beziercurveto.asp
             ctx.beginPath();
-            ctx.moveTo(50, 450);
+            ctx.moveTo(50, 50);
             ctx.bezierCurveTo(20, 20, 100, 100, 100, 100);
             ctx.bezierCurveTo(120, 120, 50, 200, 100, 200);
             ctx.bezierCurveTo(220, 220, 75, 100, 150, 150);
