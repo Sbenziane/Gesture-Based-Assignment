@@ -1,6 +1,14 @@
 <html>
     <head>
         <script>global=window</script>
+        <style>
+            .hidden{
+                display:none;
+            }
+            canvas{
+
+            }
+        </style>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
@@ -8,20 +16,21 @@
         <script src='js/vector.myo.js'></script>
     </head>
     <body>
-    <canvas id="game" width="550" height="450" style="border:1px solid #d3d3d3;">
+    <canvas id="game" width="550" height="450">
         Your browser does not support the HTML5 canvas tag.</canvas>
-    <canvas id="game_wire" width="550" height="450" style="display:none;"></canvas>
-    <canvas id="game_start_box" width="550" height="450" style="display:none;"></canvas>
-    <canvas id="game_end_box" width="550" height="450" style="border:1px solid #d3d3d3;"></canvas>
+    <canvas id="game_wire" width="550" height="450" class="hidden"></canvas>
+    <canvas id="game_start_box" width="550" height="450" class="hidden"></canvas>
+    <canvas id="game_end_box" width="550" height="450" class="hidden"></canvas>
     <p id="demo"></p>
         <script>
         var on = false;
+        var wire_data, start_box_data, end_box_data;
         var canvas = document.getElementById("game"), ctx = canvas.getContext("2d"), canvas_width = canvas.width, canvas_height = canvas.height;
-            w_c = document.getElementById("game_wire"), w_ctx = w_c.getContext("2d"), wire_data,
-            s_c = document.getElementById("game_start_box"), s_ctx = s_c.getContext("2d"), start_box_data,
-            e_c = document.getElementById("game_end_box"), e_ctx = e_c.getContext("2d"), end_box_data;
+            w_c = document.getElementById("game_wire"), w_ctx = w_c.getContext("2d"),
+            s_c = document.getElementById("game_start_box"), s_ctx = s_c.getContext("2d"),
+            e_c = document.getElementById("game_end_box"), e_ctx = e_c.getContext("2d");
         var start_x = 50, start_y = 50, end_x = 500, end_y = 50;
-        var hoop_w_r = 20, hoop_h_r = 5, hoop_zero_l = 0 + hoop_w_r, hoop_y_l = canvas_height - hoop_w_r, hoop_x_l = canvas_width - hoop_w_r; 
+        var hoop_w_r = 20, hoop_h_r = 5;
         var pie_by_2 = 2 * Math.PI, pie_div_180 = Math.PI / 180; 
         ctx.lineWidth = 3 , ctx.strokeStyle = "#020202", w_ctx.lineWidth = 3, w_ctx.strokeStyle = "#020202";
         ctx.translate(0, canvas_height);
@@ -49,14 +58,6 @@
         Myo.on('vector', _.throttle(function(vector){
             if(on){
                 var xPos = (vector.x * 500) + start_x, yPos = (vector.y * 500) + start_y, zPos = vector.theta * 360;
-                if(xPos < hoop_zero_l) 
-                    xPos = hoop_zero_l;
-                else if(xPos > hoop_x_l) 
-                    xPos = hoop_x_l;
-                if(yPos < hoop_zero_l) 
-                    yPos = hoop_zero_l;
-                else if(yPos > hoop_y_l) 
-                    yPos = hoop_y_l;
                 draw_game(xPos, yPos, zPos, hoop_w_r, hoop_h_r);
             }
 		}, 50));
@@ -102,7 +103,6 @@
                 alert("Whooo");
                 new_game();
             }
-            //console.log(e_ctx.isPointInPath(x1, y1));
 
             // Check if out of bounds.
             if(hoop_off_wire(x1, y1, x2, y2, x3, y3)) new_game();
