@@ -18,15 +18,16 @@ crossorigin="anonymous">
           <p id="demo"></p>
 
           <form class="form-save" action="/save" method="post">
-            <div>Your Score: <p id="savedAt"></p></div>
+            <input type="text" id="savedUsername">
+            <div>Your Score: <p id="savedTime"></p></div>
             <div><button type='button' id="saveScore" class="btn btn-block text-white" style="background: #9243D3;">Save</button></div>         
          </form>
-
         </div>
     
         <div class="col-lg-7">
           <div class="rounded" style="padding-right: 30px; padding-left: 30px; margin-right:50px; margin-top: 40px;">
           <h4>Scores</h3>
+            <td class = "topscores"></td>
           </div>
         </div>
     
@@ -66,7 +67,7 @@ crossorigin="anonymous">
 
     function stopTimer() {
         var time = document.getElementById("demo").innerHTML;
-        document.getElementById("savedAt").innerHTML = time;
+        document.getElementById("savedTime").innerHTML = time;
         clearTimeout(x);
         timerOn = 0;
         console.log(time);
@@ -79,44 +80,42 @@ crossorigin="anonymous">
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
     }
 
+    /*// Get IP address
     var ipadd;
-    // Get IP address
     $.getJSON('//freegeoip.net/json/?callback=?', function(data) {
         ipadd = data.ip;
-    });
+    });*/
 
-      // Button click event
-  $('#saveScore').click(function ( event ){
-    event.preventDefault(); // Cancels default action of click - https://api.jquery.com/event.preventdefault/
-     
-    console.log("IP: " + this.ipadd);
+    // Button click event
+    $('#saveScore').click(function ( event ){
+        event.preventDefault(); // Cancels default action of click - https://api.jquery.com/event.preventdefault/
 
-    // User's data in json
-    var scoreData = {
-        username: "newuser111",
-        ipaddress: String(ipadd),
-        score: document.getElementById("savedAt").innerHTML
-    }
-    console.log(scoreData)
-    scoreData = JSON.stringify(scoreData); // Turns whole json object into string
-    
-    // Adapted from https://stackoverflow.com/a/26930355/7232648
-    $.ajax({
-          url: '/save',
-          headers: {
-            'Content-Type':'application/json' // pass as json
-          },
-          data: scoreData,
-          dataType: 'json',
-          method: 'POST',
-          success: function (data) { // If successful, print the prediction to the prediction div
-            $('.prediction').text(data.prediction)
-          },
-          error: function (error) { // If not, print an error to the console
-            console.log(error);
-          }
-        });
-  }) // end button click event
+        // User's data in json
+        var scoreData = {
+            username: document.getElementById("savedUsername").value,
+            score: document.getElementById("savedTime").innerHTML
+        }
+        scoreData = JSON.stringify(scoreData); 
+        console.log("html json: " + scoreData)
+        
+        // Adapted from https://stackoverflow.com/a/26930355/7232648
+        $.ajax({
+            url: '/save',
+            headers: {
+                'Content-Type':'application/json' // pass as json
+            },
+            data: scoreData, // Turns whole json object into string
+            dataType: 'json',
+            method: 'POST',
+            success: function (data) { // If successful, print "saved"]
+                console.log("allscores: " + data.allscores)
+                $('.topscores').text(data.allscores)
+            },
+            error: function (error) { // If not, print an error to the console
+                console.log(error);
+            }
+            });
+    }) // end button click event
 </script>
 
 </body>

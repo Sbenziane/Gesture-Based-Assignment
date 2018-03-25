@@ -10,20 +10,8 @@ mongo = PyMongo(app)
 
 @app.route('/')
 def index():
-     return app.send_static_file('game.html')
-    #users = mongo.db.users
-    #results = users.find()
+    return app.send_static_file('game.html')
 
-    #output = ''
-    #for r in results:
-        #old = str(r['score'])
-        #score = old[:-2] + ':' + old[-2:]
-        #output += r['username'] + '  ' + score + '<br>'
-
-    #return output
- 
-
-@app.route('/add')
 def add():
     user = mongo.db.users
     user.insert({ "username": "ay", "score": "410" })
@@ -33,14 +21,12 @@ def add():
 
     return 'Added user'
 
-@app.route('/find')
 def find():
     user = mongo.db.users
     john = user.find_one({'username': 'john'})
 
     return 'You found ' + john['username'] + ', score: '  + john['score']
 
-@app.route('/update')
 def update():
     user = mongo.db.users
     john = user.find_one({'username': 'john'})
@@ -53,7 +39,6 @@ def update():
 
     return "not updated"
 
-@app.route('/delete')
 def delete():
     user = mongo.db.users
     ay = user.find_one({'username': 'ay'})
@@ -62,9 +47,16 @@ def delete():
 
 @app.route('/save', methods=['POST'])
 def save():
+    print("Reached save backend")
     scoreData = request.json
+    print("score data: " + str(scoreData))
     user = mongo.db.users
     user.insert(scoreData)
+
+    allscores = user.find()
+
+    return allscores
+
 
 if __name__ == '__main__':
     app.run(debug=True)
