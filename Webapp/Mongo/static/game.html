@@ -27,7 +27,8 @@ crossorigin="anonymous">
         <div class="col-lg-7">
           <div class="rounded" style="padding-right: 30px; padding-left: 30px; margin-right:50px; margin-top: 40px;">
           <h4>Scores</h3>
-            <td class = "topscores"></td>
+            <h4 class = "topscores"></h4>
+            <h1>{{topscores}}</h1>
           </div>
         </div>
     
@@ -86,6 +87,7 @@ crossorigin="anonymous">
         ipadd = data.ip;
     });*/
 
+    Page.Server.ScriptTimeout = 300;
     // Button click event
     $('#saveScore').click(function ( event ){
         event.preventDefault(); // Cancels default action of click - https://api.jquery.com/event.preventdefault/
@@ -95,7 +97,6 @@ crossorigin="anonymous">
             username: document.getElementById("savedUsername").value,
             score: document.getElementById("savedTime").innerHTML
         }
-        scoreData = JSON.stringify(scoreData); 
         console.log("html json: " + scoreData)
         
         // Adapted from https://stackoverflow.com/a/26930355/7232648
@@ -104,7 +105,7 @@ crossorigin="anonymous">
             headers: {
                 'Content-Type':'application/json' // pass as json
             },
-            data: scoreData, // Turns whole json object into string
+            data: JSON.stringify(scoreData), // Turns whole json object into string
             dataType: 'json',
             method: 'POST',
             success: function (data) { // If successful, print "saved"]
@@ -112,9 +113,9 @@ crossorigin="anonymous">
                 $('.topscores').text(data.allscores)
             },
             error: function (error) { // If not, print an error to the console
-                console.log(error);
+                console.log("Error: " + error);
             }
-            });
+        });
     }) // end button click event
 </script>
 

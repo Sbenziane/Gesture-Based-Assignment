@@ -10,7 +10,9 @@ mongo = PyMongo(app)
 
 @app.route('/')
 def index():
-    return app.send_static_file('game.html')
+    user = mongo.db.users
+    topscores = user.find()
+    return app.send_static_file('game.html', topscores=topscores)
 
 def add():
     user = mongo.db.users
