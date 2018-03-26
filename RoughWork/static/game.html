@@ -6,7 +6,10 @@
                 display:none;
             }
             canvas{
-
+                padding: 0;
+                margin: auto;
+                display: block;
+                width: 550px;
             }
         </style>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
@@ -38,7 +41,7 @@
         w_ctx.translate(0, canvas_height);
         w_ctx.scale(1, -1);
         
-        test = true;
+        test = false;
 
         Myo.connect();
 
@@ -65,10 +68,19 @@
             on = false;
             draw_game(start_x, start_y, 0, hoop_w_r, hoop_h_r);
         }
+        function win_game(){
+            // Do win game stuff, like add score.
+            new_game();
+            alert("Whooo");
+        }
+        function lose_game(){
+            // Buzz.
+            new_game();
+        }
         function draw_game(x, y, a, w_r, h_r){
             // Clear Canvas and draw game.
             ctx.clearRect(0, 0, canvas_width, canvas_height);
-            //extra_graphics();
+            extra_graphics();
             draw_wire(ctx);
             if(on)
                 draw_hoop(x, y, a, w_r, h_r);
@@ -97,15 +109,11 @@
             var p_1 = wire_data.data[(Math.round(canvas_height - y3) * (wire_data.width * 4)) + (Math.round(x3) * 4)],
                 p_2 = wire_data.data[(Math.round(canvas_height - y2) * (wire_data.width * 4)) + (Math.round(x2) * 4)];
             
-            if((p_1 != 0 && p_1 != undefined) || (p_2 != 0 && p_2 != undefined)) new_game();
-            
-            if(e_ctx.isPointInPath(x1, y1)){
-                alert("Whooo");
-                new_game();
-            }
-
+            if((p_1 != 0 && p_1 != undefined) || (p_2 != 0 && p_2 != undefined)) lose_game();
+            // Check if the hoop has reached the end point.
+            else if(e_ctx.isPointInPath(x1, y1)) win_game();
             // Check if out of bounds.
-            if(hoop_off_wire(x1, y1, x2, y2, x3, y3)) new_game();
+            else if(hoop_off_wire(x1, y1, x2, y2, x3, y3)) lose_game();
         }
         function hoop_off_wire(x1, y1, x2, y2, x3, y3){
             // Check points in the hidden canvas with only a wire on it.
@@ -170,13 +178,13 @@
         }
         function wire_holder(x, y, w, h, c){ 
             var w2 = w/2, h2 = h/2, 
-                x1 = x - w2, y1 = y + h, 
+                x1 = x - w2, y1 = y - h, 
                 x2 = x + w2;
             // Body of cylinder.
             ctx.beginPath();
             ctx.moveTo(x1, y);
             ctx.lineTo(x1,y1-1);
-            ctx.bezierCurveTo(x1,y1,x,y+c,x2,y1);
+            ctx.bezierCurveTo(x1,y1,x,y-c,x2,y1);
             ctx.fillStyle = "#a85114";
             ctx.fill();
             ctx.stroke();
@@ -185,7 +193,7 @@
             ctx.beginPath();
             ctx.moveTo(x2, y);
             ctx.lineTo(x2,y1-1);
-            ctx.bezierCurveTo(x2,y1,x,y+c,x1,y1);
+            ctx.bezierCurveTo(x2,y1,x,y-c,x1,y1);
             ctx.fill();
             ctx.stroke();
             ctx.closePath();   
