@@ -56,15 +56,15 @@ After considering the options, we agreed JavaScript would be ideal considering t
 
 #### Game Objects
 
-Excluding the extra graphics in the game, the game objects main objects of concern are the wire and hoop objects. We focused on creating the wire on the canvas first. After researching how to draw curved lines, there were two options: ```quadraticCurveTo(cpx,cpy,x,y)``` and ```ctx.bezierCurveTo(cpx,cpy,cpx,cpy,x,y);```. We mainly used the bezier curve as it has more control points, giving it more flexiblity in the path it takes between the start and end points of the line. Moving on to the hoop, we began using a solution adapted from the following [tutorial](http://scienceprimer.com/draw-oval-html5-canvas).
+Excluding the extra graphics in the game, the main objects of concern are the wire and hoop objects. We focused on creating the wire on the canvas first. After researching how to draw curved lines, there were two options: ```quadraticCurveTo(cpx,cpy,x,y)``` and ```ctx.bezierCurveTo(cpx,cpy,cpx,cpy,x,y);```. We mainly used the Bezier curve as it has more control points, giving it more flexibility in the path it takes between the start and end points of the line. Moving on to the hoop, we began using a solution adapted from the following [tutorial](http://scienceprimer.com/draw-oval-html5-canvas).
 
 ```javascript
 PI2 = 2 * Math.PI;
 PI0 = 0 * Math.PI;
-// Start points.
+// Example co-ordinates.
 x = 50;
 y = 450;
-// Width  and height radii.
+// Width and height radii.
 w_r = 20;
 h_r = 5;
 
@@ -80,8 +80,11 @@ for (var i = 0 * Math.PI; i < PI2; i += 0.01 ) {
            }
 ```
 
-However, we discovered another function, ```ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise)```, that would be more efficent in rotating the oval - //which is important as the position would be rotated each 
+However, we discovered another function, ```ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise)```, that would be more efficent as it provides the functionality to rotate, where as it would be much more cumbersome to rotate the above solution. This is important as the Myo arm band will have a constant stream of data that will continuously update the *x*,*y* position and rotation of the hoop.
 
+#### Myo Controls
+
+Now that the game objects are set up we need to control them via the Myo armband. Fortunately [Thalmic Labs](https://www.thalmic.com/) have released a JavaScript plugin [Myo JS](https://github.com/thalmiclabs/myo.js) to manage the connection with Myo, stream data and detect certain gestures. They have also provided [Myo JS Vector](https://github.com/thalmiclabs/myojs-vector), a plugin that is dependent on the previously mentioned plugin to build on top of it's functionality. It manages the data to refine the position and it's rotation to mimic the bands directional magnitude. To convert this vector data to suit the span of our canvas, we need to multiply the *x*,*y* position by the desired height or width of the canvas and multiply the theta value by 360 to convert it to degrees.
 
 ## How To Run
 
@@ -89,7 +92,7 @@ However, we discovered another function, ```ellipse(x, y, radiusX, radiusY, rota
 
 ## References
 
-(list of refs here)
+https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/ellipse
 
 -----
 
