@@ -39,16 +39,22 @@ crossorigin="anonymous">
     $( document ).ready(function() {
         console.log( "ready!" );
         $.get("/getScoreList", function(data){
-            console.log("Data: " + data);
+            //console.log("Data: " + data);
             d = JSON.parse(data);
-            console.log("d: " + d)
-            console.log("d.username: " + d[1].username);
-            $('.username').text(d[1].username);
-            numScore = d[1].score;
-            // Add : back in for time, just for readability - https://stackoverflow.com/a/5869593/7232648
-            var len = numScore.length;
-            var timeScore = numScore.substring(0, len-2) + ":" + numScore.substring(len-2);
-            $('.score').text(timeScore);
+            //console.log("d type: " + typeof d);
+            //console.log("d: " + d)
+            //console.log("d.username: " + d[1].username);
+
+            for (var i = 0, len = d.length; i < len; i++) {
+                $('.username').text(d[i].username);
+                console.log("username: " + d[i].username)
+                numScore = d[i].score;
+                // Add : back in for time, just for readability - https://stackoverflow.com/a/5869593/7232648
+                var len = numScore.length;
+                var timeScore = numScore.substring(0, len-2) + ":" + numScore.substring(len-2);
+                console.log("score: " + timeScore)
+                $('.score').text(timeScore);
+            }
         });
     });
 
