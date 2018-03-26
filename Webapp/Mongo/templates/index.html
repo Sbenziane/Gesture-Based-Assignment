@@ -28,7 +28,11 @@ crossorigin="anonymous">
           <div class="rounded" style="padding-right: 30px; padding-left: 30px; margin-right:50px; margin-top: 40px;">
           <h4>Scores</h3>
             <h4 class = "topscores"></h4>
-            <h1>{{topscores}}</h1>
+            {% for post in topscores %}
+              <p>{{ post.username }}</p>
+              <p>{{ post.score }}</p>
+            {% endfor %}
+              
           </div>
         </div>
     
@@ -36,6 +40,23 @@ crossorigin="anonymous">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
+    //{% for selected_sub in Post.objects() %}
+    //p>{{ topscores }}</p>
+           // {% end for %}
+    //var topscoresList = JSON.parse('{{ topscores | tojson }}');
+    //var topscores = JSON.parse('{{ topscores | tojson }}');
+    //var topscoresList = '{{ topscores|tojson }}';
+    //console.log("topscores: " + topscoresList[[1]]);
+/*
+    for(var i = 0; i < topscoresList.length; i++) {
+        var h5 = document.createElement("h5");
+        h5.innerHTML = topscoresList[i].title;
+        news.appendChild(h5);
+        var p = document.createElement("p");
+        p.innerHTML = topscoresList[i].author;
+        news.appendChild(p);
+    }   */
+
     var timerOn = 0;
     function timer() {
         if (timerOn == 1){

@@ -1,6 +1,6 @@
 from flask import Flask, request, json, jsonify, render_template
 from flask_pymongo import PyMongo
-from bson.json_util import dumps
+from bson.json_util import dumps, loads
 
 app = Flask(__name__)
 
@@ -12,15 +12,24 @@ mongo = PyMongo(app)
 @app.route('/')
 def index():
     user = mongo.db.users
-    topscores = dumps(user.find())
+    topscores = user.find() # adapted from https://stackoverflow.com/a/30400268/7232648
+    print(topscores)
+    #topscores = loads(topscores1)
+    #print("topscores: " + str(topscores))
     #for obj in user.find():
         #print(obj['username'])
 
     #userList = data['username']
     #scoreList = data['score']
-    print(userdict)
+    #print(topscores)
 
-    return render_template('index.html', topscores=topscores)
+    return app.send_static_file('index.html')
+
+@app.route('/getScoreList', methods=['GET'])
+def getScores():
+    user = mongo.db.users
+    topscores = dumps(user.find()) # adapted from https://stackoverflow.com/a/30400268/7232648
+    print(topscores)
 
 @app.route('/save', methods=['POST'])
 def save():
