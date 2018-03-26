@@ -14,22 +14,16 @@ def index():
     user = mongo.db.users
     topscores = user.find() # adapted from https://stackoverflow.com/a/30400268/7232648
     print(topscores)
-    #topscores = loads(topscores1)
-    #print("topscores: " + str(topscores))
-    #for obj in user.find():
-        #print(obj['username'])
-
-    #userList = data['username']
-    #scoreList = data['score']
-    #print(topscores)
 
     return app.send_static_file('index.html')
 
 @app.route('/getScoreList', methods=['GET'])
-def getScores():
+def getScoreList():
     user = mongo.db.users
     topscores = dumps(user.find()) # adapted from https://stackoverflow.com/a/30400268/7232648
+    #topscores = loads(topscoresL)
     print(topscores)
+    return topscores
 
 @app.route('/save', methods=['POST'])
 def save():

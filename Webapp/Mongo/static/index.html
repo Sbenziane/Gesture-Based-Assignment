@@ -27,12 +27,8 @@ crossorigin="anonymous">
         <div class="col-lg-7">
           <div class="rounded" style="padding-right: 30px; padding-left: 30px; margin-right:50px; margin-top: 40px;">
           <h4>Scores</h3>
-            <h4 class = "topscores"></h4>
-            {% for post in topscores %}
-              <p>{{ post.username }}</p>
-              <p>{{ post.score }}</p>
-            {% endfor %}
-              
+            <p class="username"></p>
+            <p class="score"></p>            
           </div>
         </div>
     
@@ -40,22 +36,21 @@ crossorigin="anonymous">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
-    //{% for selected_sub in Post.objects() %}
-    //p>{{ topscores }}</p>
-           // {% end for %}
-    //var topscoresList = JSON.parse('{{ topscores | tojson }}');
-    //var topscores = JSON.parse('{{ topscores | tojson }}');
-    //var topscoresList = '{{ topscores|tojson }}';
-    //console.log("topscores: " + topscoresList[[1]]);
-/*
-    for(var i = 0; i < topscoresList.length; i++) {
-        var h5 = document.createElement("h5");
-        h5.innerHTML = topscoresList[i].title;
-        news.appendChild(h5);
-        var p = document.createElement("p");
-        p.innerHTML = topscoresList[i].author;
-        news.appendChild(p);
-    }   */
+    $( document ).ready(function() {
+        console.log( "ready!" );
+        $.get("/getScoreList", function(data){
+            console.log("Data: " + data);
+            d = JSON.parse(data);
+            console.log("d: " + d)
+            console.log("d.username: " + d[1].username);
+            $('.username').text(d[1].username);
+            numScore = d[1].score;
+            // Add : back in for time, just for readability - https://stackoverflow.com/a/5869593/7232648
+            var len = numScore.length;
+            var timeScore = numScore.substring(0, len-2) + ":" + numScore.substring(len-2);
+            $('.score').text(timeScore);
+        });
+    });
 
     var timerOn = 0;
     function timer() {
@@ -102,12 +97,6 @@ crossorigin="anonymous">
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
     }
 
-    /*// Get IP address
-    var ipadd;
-    $.getJSON('//freegeoip.net/json/?callback=?', function(data) {
-        ipadd = data.ip;
-    });*/
-
     // Button click event
     $('#saveScore').click(function ( event ){
         event.preventDefault(); // Cancels default action of click - https://api.jquery.com/event.preventdefault/
@@ -117,11 +106,13 @@ crossorigin="anonymous">
         } else {
             givenusername = document.getElementById("savedUsername").value;
         }
+        var scoreSec = document.getElementById("savedTime").innerHTML;
+        var scoreNum = scoreSec.replace(":", "");
 
         // User's data in json
         var scoreData = {
             username: givenusername,
-            score: document.getElementById("savedTime").innerHTML
+            score: scoreNum,
         }
         scoreData = JSON.stringify(scoreData)
         console.log("html json: " + scoreData)
