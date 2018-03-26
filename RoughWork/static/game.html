@@ -20,20 +20,18 @@
         <script src='js/game.js'></script>
     </head>
     <body>
-    <canvas id="game" width="550" height="450">
-        Your browser does not support the HTML5 canvas tag.</canvas>
-    <canvas id="game_wire" width="550" height="450" class="hidden"></canvas>
-    <canvas id="game_start_box" width="550" height="450" class="hidden"></canvas>
-    <canvas id="game_end_box" width="550" height="450" class="hidden"></canvas>
-    <p id="demo"></p>
-        <script>
-        var canvas = document.getElementById("game"), ctx = canvas.getContext("2d"), canvas_width = canvas.width, canvas_height = canvas.height;
-            w_c = document.getElementById("game_wire"), w_ctx = w_c.getContext("2d"),
-            s_c = document.getElementById("game_start_box"), s_ctx = s_c.getContext("2d"),
-            e_c = document.getElementById("game_end_box"), e_ctx = e_c.getContext("2d");
+        <canvas id="game" width="550" height="450">
+            Your browser does not support the HTML5 canvas tag.</canvas>
+        <canvas id="game_wire" width="550" height="450" class="hidden"></canvas>
+        <canvas id="game_start_box" width="550" height="450" class="hidden"></canvas>
+        <canvas id="game_end_box" width="550" height="450" class="hidden"></canvas>
+        <script>           
+        var canvas = document.getElementById("game");
         
-        Game.load(ctx,w_ctx,s_ctx,e_ctx,canvas_width,canvas_height);
-
+        Game.load(document.getElementById("game_wire").getContext("2d"),
+                  document.getElementById("game_start_box").getContext("2d"), 
+                  document.getElementById("game_end_box").getContext("2d"), 
+                  canvas.getContext("2d"), canvas.width, canvas.height);
         Myo.connect();
 
         /*Myo.on('connected', function(){
