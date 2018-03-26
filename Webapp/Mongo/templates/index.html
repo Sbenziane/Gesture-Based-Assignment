@@ -87,16 +87,22 @@ crossorigin="anonymous">
         ipadd = data.ip;
     });*/
 
-    Page.Server.ScriptTimeout = 300;
     // Button click event
     $('#saveScore').click(function ( event ){
         event.preventDefault(); // Cancels default action of click - https://api.jquery.com/event.preventdefault/
 
+        if(document.getElementById("savedUsername").value == ""){
+            givenusername = "anon";
+        } else {
+            givenusername = document.getElementById("savedUsername").value;
+        }
+
         // User's data in json
         var scoreData = {
-            username: document.getElementById("savedUsername").value,
+            username: givenusername,
             score: document.getElementById("savedTime").innerHTML
         }
+        scoreData = JSON.stringify(scoreData)
         console.log("html json: " + scoreData)
         
         // Adapted from https://stackoverflow.com/a/26930355/7232648
@@ -105,7 +111,7 @@ crossorigin="anonymous">
             headers: {
                 'Content-Type':'application/json' // pass as json
             },
-            data: JSON.stringify(scoreData), // Turns whole json object into string
+            data: scoreData, // Turns whole json object into string
             dataType: 'json',
             method: 'POST',
             success: function (data) { // If successful, print "saved"]
@@ -113,7 +119,7 @@ crossorigin="anonymous">
                 $('.topscores').text(data.allscores)
             },
             error: function (error) { // If not, print an error to the console
-                console.log("Error: " + error);
+                //console.log("Error: " + error);
             }
         });
     }) // end button click event
