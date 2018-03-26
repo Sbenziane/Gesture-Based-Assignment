@@ -52,7 +52,61 @@ After considering the options, we agreed JavaScript would be ideal considering t
 
 ## Implementation
 
-(impl. stuff here)
+### Game 
+
+#### Game Objects
+
+Excluding the extra graphics in the game, the main objects of concern are the wire and hoop objects. We focused on creating the wire on the canvas first. After researching how to draw curved lines, there were two options: ```quadraticCurveTo(cpx,cpy,x,y)``` and ```ctx.bezierCurveTo(cpx,cpy,cpx,cpy,x,y);```. We mainly used the Bezier curve as it has more control points, giving it more flexibility in the path it takes between the start and end points of the line. Moving on to the hoop, we began using a solution adapted from the following [tutorial](http://scienceprimer.com/draw-oval-html5-canvas).
+
+```javascript
+PI2 = 2 * Math.PI;
+PI0 = 0 * Math.PI;
+// Example co-ordinates.
+x = 50;
+y = 450;
+// Width and height radii.
+w_r = 20;
+h_r = 5;
+
+for (var i = 0 * Math.PI; i < PI2; i += 0.01 ) {
+               xPos = x - (h_r * Math.sin(i)) * Math.sin(PI0) + (w_r * Math.cos(i)) * Math.cos(PI0);
+               yPos = y + (w_r * Math.cos(i)) * Math.sin(PI0) + (h_r * Math.sin(i)) * Math.cos(PI0);
+               console.log("x: "+xPos);
+               console.log("y: "+yPos);
+               if (i == 0)
+                   ctx.moveTo(xPos, yPos);
+               else
+                   ctx.lineTo(xPos, yPos);
+           }
+```
+
+However, we discovered another function, ```ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise)```, that would be more efficent as it provides the functionality to rotate, where as it would be much more cumbersome to rotate the above solution. This is important as the Myo arm band will have a constant stream of data that will continuously update the *x*,*y* position and rotation of the hoop.
+
+#### Myo Controls
+
+Now that the game objects were set up we needed to control them via the Myo armband. Fortunately [Thalmic Labs](https://www.thalmic.com/) have released a JavaScript plugin [Myo JS](https://github.com/thalmiclabs/myo.js) to manage the connection with Myo, stream data and detect certain gestures. They have also provided [Myo JS Vector](https://github.com/thalmiclabs/myojs-vector), a plugin that is dependent on the previously mentioned plugin to build on top of it's functionality. It manages the data to refine the position and it's rotation to mimic the bands directional magnitude. To convert this vector data to suit the span of our canvas, we needed to multiply the *x*,*y* position by the desired height or width of the canvas and multiply the theta value by 360 to convert it to degrees. We also add a listener function waiting for the fist gesture event. When it is triggered, the game is started/restarted and the orientation is set to zero, the hoop rotated to 90 degrees at the start of the wire and it's movement is relative to the position of your hand when you start the game. For this reason it is best to start the game with the back of your hand facing upward. It's also optimal to hold your hand low and close to your body. As mentioned in the Myo JS Vector documentation, the charging light/port should be toward your hand, otherwise you will have parallel directions, i.e. up = down, right = left, etc.
+
+#### Collisions
+
+Since this game is 2D, only the far edges of the hoop need to be checked for collisons with the wire. The following solution is what we used to calculate the edge points of a hoop given the center point and the angle in degrees.
+
+```javascript
+// Example co-ordinates of center point.
+x1 = 50;
+y1 = 450;
+d1 = 90;
+
+d2 = (d1) * Math.PI / 180,
+d3 = (d1-180) * Math.PI / 180
+
+// Edge points.
+x2 = x1 + w * Math.cos(d2),
+y2 = y1 + w * Math.sin(d2),
+x3 = x1 + w * Math.cos(d3),
+y3 = y1 + w * Math.sin(d3);
+```
+
+Now that we have the edges calculated, the next task was to determine if the edge points intersected with the wire path. This was complex to calculate because of the very irregular path. We found a function that we thought might serve well, ```isPointInPath(x,y)```.
 
 ## How To Run
 
@@ -60,7 +114,7 @@ After considering the options, we agreed JavaScript would be ideal considering t
 
 ## References
 
-(list of refs here)
+https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/ellipse
 
 -----
 

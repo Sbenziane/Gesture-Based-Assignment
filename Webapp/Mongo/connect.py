@@ -1,5 +1,6 @@
-from flask import Flask, request, json, jsonify
+from flask import Flask, request, json, jsonify, render_template
 from flask_pymongo import PyMongo
+from bson.json_util import dumps, loads
 
 app = Flask(__name__)
 
@@ -10,40 +11,19 @@ mongo = PyMongo(app)
 
 @app.route('/')
 def index():
-    return app.send_static_file('game.html')
-
-def add():
     user = mongo.db.users
-    user.insert({ "username": "ay", "score": "410" })
-    user.insert({ "username": "yes", "score": "210" })
-    user.insert({ "username": "john", "score": "401" })
-    user.insert({ "username": "ay", "score": "5332" })
+    topscores = user.find() # adapted from https://stackoverflow.com/a/30400268/7232648
+    print(topscores)
 
-    return 'Added user'
+    return app.send_static_file('index.html')
 
-def find():
+@app.route('/getScoreList', methods=['GET'])
+def getScoreList():
     user = mongo.db.users
-    john = user.find_one({'username': 'john'})
-
-    return 'You found ' + john['username'] + ', score: '  + john['score']
-
-def update():
-    user = mongo.db.users
-    john = user.find_one({'username': 'john'})
-    newscore = 421
-    oldscore = 401
-    if newscore > oldscore:
-        john['score'] = str(newscore)
-        user.save(john)
-        return "updated score"
-
-    return "not updated"
-
-def delete():
-    user = mongo.db.users
-    ay = user.find_one({'username': 'ay'})
-    user.remove(ay)
-    return "removed"
+    topscores = dumps(user.find()) # adapted from https://stackoverflow.com/a/30400268/7232648
+    #topscores = loads(topscoresL)
+    print(topscores)
+    return topscores
 
 @app.route('/save', methods=['POST'])
 def save():
@@ -53,9 +33,7 @@ def save():
     user = mongo.db.users
     user.insert(scoreData)
 
-    allscores = user.find()
-
-    return allscores
+    return print("saved score")
 
 
 if __name__ == '__main__':

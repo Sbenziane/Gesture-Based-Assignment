@@ -27,7 +27,8 @@ crossorigin="anonymous">
         <div class="col-lg-7">
           <div class="rounded" style="padding-right: 30px; padding-left: 30px; margin-right:50px; margin-top: 40px;">
           <h4>Scores</h3>
-            <td class = "topscores"></td>
+            <p class="username"></p>
+            <p class="score"></p>            
           </div>
         </div>
     
@@ -35,6 +36,28 @@ crossorigin="anonymous">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
+    $( document ).ready(function() {
+        console.log( "ready!" );
+        $.get("/getScoreList", function(data){
+            //console.log("Data: " + data);
+            d = JSON.parse(data);
+            //console.log("d type: " + typeof d);
+            //console.log("d: " + d)
+            //console.log("d.username: " + d[1].username);
+
+            for (var i = 0, len = d.length; i < len; i++) {
+                $('.username').text(d[i].username);
+                console.log("username: " + d[i].username)
+                numScore = d[i].score;
+                // Add : back in for time, just for readability - https://stackoverflow.com/a/5869593/7232648
+                var len = numScore.length;
+                var timeScore = numScore.substring(0, len-2) + ":" + numScore.substring(len-2);
+                console.log("score: " + timeScore)
+                $('.score').text(timeScore);
+            }
+        });
+    });
+
     var timerOn = 0;
     function timer() {
         if (timerOn == 1){
@@ -80,22 +103,24 @@ crossorigin="anonymous">
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
     }
 
-    /*// Get IP address
-    var ipadd;
-    $.getJSON('//freegeoip.net/json/?callback=?', function(data) {
-        ipadd = data.ip;
-    });*/
-
     // Button click event
     $('#saveScore').click(function ( event ){
         event.preventDefault(); // Cancels default action of click - https://api.jquery.com/event.preventdefault/
 
+        if(document.getElementById("savedUsername").value == ""){
+            givenusername = "anon";
+        } else {
+            givenusername = document.getElementById("savedUsername").value;
+        }
+        var scoreSec = document.getElementById("savedTime").innerHTML;
+        var scoreNum = scoreSec.replace(":", "");
+
         // User's data in json
         var scoreData = {
-            username: document.getElementById("savedUsername").value,
-            score: document.getElementById("savedTime").innerHTML
+            username: givenusername,
+            score: scoreNum,
         }
-        scoreData = JSON.stringify(scoreData); 
+        scoreData = JSON.stringify(scoreData)
         console.log("html json: " + scoreData)
         
         // Adapted from https://stackoverflow.com/a/26930355/7232648
@@ -112,9 +137,9 @@ crossorigin="anonymous">
                 $('.topscores').text(data.allscores)
             },
             error: function (error) { // If not, print an error to the console
-                console.log(error);
+                //console.log("Error: " + error);
             }
-            });
+        });
     }) // end button click event
 </script>
 
