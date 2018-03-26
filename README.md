@@ -52,7 +52,36 @@ After considering the options, we agreed JavaScript would be ideal considering t
 
 ## Implementation
 
-(impl. stuff here)
+### Game 
+
+#### Game Objects
+
+Excluding the extra graphics in the game, the game objects main objects of concern are the wire and hoop objects. We focused on creating the wire on the canvas first. After researching how to draw curved lines, there were two options: ```quadraticCurveTo(cpx,cpy,x,y)``` and ```ctx.bezierCurveTo(cpx,cpy,cpx,cpy,x,y);```. We mainly used the bezier curve as it has more control points, giving it more flexiblity in the path it takes between the start and end points of the line. Moving on to the hoop, we began using a solution adapted from the following [tutorial](http://scienceprimer.com/draw-oval-html5-canvas).
+
+```javascript
+PI2 = 2 * Math.PI;
+PI0 = 0 * Math.PI;
+// Start points.
+x = 50;
+y = 450;
+// Width  and height radii.
+w_r = 20;
+h_r = 5;
+
+for (var i = 0 * Math.PI; i < PI2; i += 0.01 ) {
+               xPos = x - (h_r * Math.sin(i)) * Math.sin(PI0) + (w_r * Math.cos(i)) * Math.cos(PI0);
+               yPos = y + (w_r * Math.cos(i)) * Math.sin(PI0) + (h_r * Math.sin(i)) * Math.cos(PI0);
+               console.log("x: "+xPos);
+               console.log("y: "+yPos);
+               if (i == 0)
+                   ctx.moveTo(xPos, yPos);
+               else
+                   ctx.lineTo(xPos, yPos);
+           }
+```
+
+However, we discovered another function, ```ellipse(x, y, radiusX, radiusY, rotation, startAngle, endAngle, anticlockwise)```, that would be more efficent in rotating the oval - //which is important as the position would be rotated each 
+
 
 ## How To Run
 
