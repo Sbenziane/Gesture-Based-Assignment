@@ -26,9 +26,13 @@ crossorigin="anonymous">
     
         <div class="col-lg-7">
           <div class="rounded" style="padding-right: 30px; padding-left: 30px; margin-right:50px; margin-top: 40px;">
-          <h4>Scores</h3>
-            <p class="username"></p>
-            <p class="score"></p>            
+          <h3>Scores</h3>
+          <table id="topscores">
+                <col width="150"><col width="60">
+              <tr>
+                <th>Username</th> <th>Score</th>
+              </tr>
+          </table>       
           </div>
         </div>
     
@@ -39,21 +43,37 @@ crossorigin="anonymous">
     $( document ).ready(function() {
         console.log( "ready!" );
         $.get("/getScoreList", function(data){
-            //console.log("Data: " + data);
             d = JSON.parse(data);
-            //console.log("d type: " + typeof d);
-            //console.log("d: " + d)
-            //console.log("d.username: " + d[1].username);
-
             for (var i = 0, len = d.length; i < len; i++) {
-                $('.username').text(d[i].username);
+                var username = d[i].username;
+                //$('.username').text(username);
                 console.log("username: " + d[i].username)
                 numScore = d[i].score;
-                // Add : back in for time, just for readability - https://stackoverflow.com/a/5869593/7232648
                 var len = numScore.length;
-                var timeScore = numScore.substring(0, len-2) + ":" + numScore.substring(len-2);
+                var timeScore = numScore.substring(0, len-2) + ":" + numScore.substring(len-2);                 // Add : back in for time, just for readability - https://stackoverflow.com/a/5869593/7232648
                 console.log("score: " + timeScore)
-                $('.score').text(timeScore);
+                //$('.score').text(timeScore);
+
+
+                var tr = document.createElement('tr');
+                var td1 = document.createElement('td');
+                td1.appendChild(document.createTextNode(username))
+                tr.appendChild(td1)
+                var td2 = document.createElement('td');
+                td2.appendChild(document.createTextNode(timeScore))
+                //td.setAttribute('rowSpan', '2') : null;
+                tr.appendChild(td2)
+                var element = document.getElementById("topscores");
+                element.appendChild(tr);
+
+                //tbdy.appendChild(tr);
+                /*
+                var el = document.createElement("TR");
+                var node = document.createTextNode(username + ": " + timeScore)
+                el.appendChild(node);
+                var element = document.getElementById("topscores");
+                element.appendChild(el);*/
+
             }
         });
     });
