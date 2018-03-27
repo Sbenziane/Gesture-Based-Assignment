@@ -1,23 +1,13 @@
 <html>
     <head>
         <script>global=window</script>
-        <style>
-            .hidden{
-                display:none;
-            }
-            canvas{
-                padding: 0;
-                margin: auto;
-                display: block;
-                width: 550px;
-            }
-        </style>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
         <script src='js/plugins/myo.js'></script>
         <script src='js/plugins/vector.myo.js'></script>
         <script src='js/game.js'></script>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
     <body>
         <canvas id="game" width="550" height="450">
@@ -25,27 +15,6 @@
         <canvas id="game_wire" width="550" height="450" class="hidden"></canvas>
         <canvas id="game_start_box" width="550" height="450" class="hidden"></canvas>
         <canvas id="game_end_box" width="550" height="450" class="hidden"></canvas>
-        <script>           
-        var canvas = document.getElementById("game");
-        
-        Game.load(document.getElementById("game_wire").getContext("2d"),
-                  document.getElementById("game_start_box").getContext("2d"), 
-                  document.getElementById("game_end_box").getContext("2d"), 
-                  canvas.getContext("2d"), canvas.width, canvas.height);
-        Myo.connect();
-
-        /*Myo.on('connected', function(){
-            myMyo = this;
-		});*/
-        Myo.on('fist', function(){
-            Game.on = true;
-            this.zeroOrientation();
-		});
-        Myo.on('vector', _.throttle(function(vector){
-            if(Game.on){
-                Game.update_game(vector);
-            }
-		}, 50));
-        </script>
+        <script src='js/script.js'></script>
     </body>
 </html>
