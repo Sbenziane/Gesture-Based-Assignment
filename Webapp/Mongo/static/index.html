@@ -28,22 +28,23 @@ crossorigin="anonymous">
           <div class="rounded" style="padding-right: 30px; padding-left: 30px; margin-right:50px; margin-top: 40px;">
           <h3>Scores</h3>
           <table id="topscores">
-                <col width="30"><col width="150"><col width="40">
-              <tr>
+            <col width="70"><col width="180"><col width="50">
+            <tr>
                 <th>Rank</th><th>Username</th> <th>Score</th>
               </tr>
               <table id="tablecontent">
-                    <col width="20"><col width="150"><col width="40">
-                    <tr><td> 1</td><td id="u0"></td><td id="s0"></td></tr>                    
-                    <tr><td> 2</td><td id="u1"></td><td id="s1"></td></tr>
-                    <tr><td> 3</td><td id="u2"></td><td id="s2"></td></tr>
-                    <tr><td> 4</td><td id="u3"></td><td id="s3"></td></tr>
-                    <tr><td> 5</td><td id="u4"></td><td id="s4"></td></tr>
-                    <tr><td> 6</td><td id="u5"></td><td id="s5"></td></tr>
-                    <tr><td> 7</td><td id="u6"></td><td id="s6"></td></tr>
-                    <tr><td> 8</td><td id="u7"></td><td id="s7"></td></tr>
-                    <tr><td> 9</td><td id="u8"></td><td id="s8"></td></tr>
-                    <tr><td>10</td><td id="u9"></td><td id="s9"></td></tr>
+                <col width="70"><col width="180"><col width="50">
+                <!-- Easier to have 10 set rows rather than creating elements in javascript. Never going to have more than 10 and if less than 10 entries, remaining rows will just be blank. -->
+                <tr><td>&nbsp;1</td><td id="u0"></td><td id="s0"></td></tr>                    
+                <tr><td>&nbsp;2</td><td id="u1"></td><td id="s1"></td></tr>
+                <tr><td>&nbsp;3</td><td id="u2"></td><td id="s2"></td></tr>
+                <tr><td>&nbsp;4</td><td id="u3"></td><td id="s3"></td></tr>
+                <tr><td>&nbsp;5</td><td id="u4"></td><td id="s4"></td></tr>
+                <tr><td>&nbsp;6</td><td id="u5"></td><td id="s5"></td></tr>
+                <tr><td>&nbsp;7</td><td id="u6"></td><td id="s6"></td></tr>
+                <tr><td>&nbsp;8</td><td id="u7"></td><td id="s7"></td></tr>
+                <tr><td>&nbsp;9</td><td id="u8"></td><td id="s8"></td></tr>
+                <tr><td>10</td><td id="u9"></td><td id="s9"></td></tr>
               </table>
           </table>       
           </div>
@@ -53,107 +54,35 @@ crossorigin="anonymous">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
-    $( document ).ready(function() {
-        console.log( "ready!" );
-        checkUpdate();
+    $( document ).ready(function() { // On page load
+        checkUpdate(); // Check the DB for scores
     });
-    $(function() {     
-        setTimeout(checkUpdate, 1000);
+
+    $(function() { // Refresh function, 
+        setTimeout(checkUpdate, 1000); // setTimeout() allows execution of code at specified time intervals - 1000 milliseconds = 1 second, run checkUpdate() every second to check for new scores
     });
 
     function checkUpdate(){
         $.get("/getScoreList", function(data){
-            d = JSON.parse(data);
-            for (var i = 0; i < d.length; i++) {
-                var utag = "u" + i;
-                var stag = "s" + i;
-                var username = d[i].username;
-                var numScore = d[i].score;
-                var len = numScore.length;
-                var timeScore = numScore.substring(0, len-2) + ":" + numScore.substring(len-2);
+            d = JSON.parse(data); // Go to the getScoresList route, let d equal the data returned by the function
+            for (var i = 0; i < d.length; i++) { // for loop, 0 to length of d (will either be 10 or less)
+                var utag = "u" + i; // Generate a username tag string (row 3 = u3, s3)
+                var stag = "s" + i; // Same as above except score tag
+                var username = d[i].username; // Let username equal the i-th entry's username 
+                var numScore = d[i].score; // Same except score
+                var len = numScore.length; // length of the score string 
+                var timeScore = numScore.substring(0, len-2) + ":" + numScore.substring(len-2); // Need to add the : back in to separate seconds from minutes - Create a new string of first element to third last element + : + the last two elements.
 
-                /* console.log("utag: " + utag + " , stag: " + stag);
-                console.log("td: " + document.getElementById(utag).innerHTML + ", u: " + username);
-                console.log("td: " + document.getElementById(stag).innerHTML + ", s: " + timeScore); */
-
-                if(document.getElementById(utag).innerHTML != username && document.getElementById(stag).innerHTML != timeScore){
-                    document.getElementById(utag).innerHTML = username;
-                    document.getElementById(stag).innerHTML = timeScore;
+                if(document.getElementById(utag).innerHTML != username && document.getElementById(stag).innerHTML != timeScore){ // If the username AND score in the table row are NOT the same as the parsed in username and score, means top 10 has updated
+                    document.getElementById(utag).innerHTML = username; // Update the relevant username cell
+                    document.getElementById(stag).innerHTML = timeScore; // Same for score
                 }
             }
-            sortTable();
         });
-        setTimeout(checkUpdate, 1000);
+        setTimeout(checkUpdate, 1000); // Go back and check for updates continuously
     }
 
-/*
-    function getTable(){
-        $.get("/getScoreList", function(data){
-            d = JSON.parse(data);
-            for (var i = 0; i < d.length; i++) {
-                var username = d[i].username;
-                numScore = d[i].score;
-                var len = numScore.length;
-                var timeScore = numScore.substring(0, len-2) + ":" + numScore.substring(len-2);                 // Add : back in for time, just for readability - https://stackoverflow.com/a/5869593/7232648
 
-                var tr = document.createElement('tr');
-                var td0 = document.createElement('td');
-                td0.appendChild(document.createTextNode(i + 1))
-                tr.appendChild(td0)
-                var td1 = document.createElement('td');
-                td1.appendChild(document.createTextNode(username))
-                tr.appendChild(td1)
-                var td2 = document.createElement('td');
-                td2.appendChild(document.createTextNode(timeScore))
-                //td.setAttribute('rowSpan', '2') : null;
-                tr.appendChild(td2)
-                var element = document.getElementById("tablecontent");
-                element.appendChild(tr);
-            }
-            sortTable();
-        });
-        setTimeout(getTable, 1000);
-    }*/
-
-    function sortTable() {
-        var table, rows, switching, i, x, y, shouldSwitch;
-        table = document.getElementById("topscores");
-        switching = true;
-        /*Make a loop that will continue until
-        no switching has been done:*/
-        while (switching) {
-            //start by saying: no switching is done:
-            switching = false;
-            rows = table.getElementsByTagName("TR");
-            /*Loop through all table rows (except the
-            first, which contains table headers):*/
-            for (i = 1; i < (rows.length - 1); i++) {
-                //start by saying there should be no switching:
-                shouldSwitch = false;
-                /*Get the two elements you want to compare,
-                one from current row and one from the next:*/
-                x = rows[i].getElementsByTagName("TD")[1].innerHTML;
-                var len1 = x.length;
-                var timeScore1 = x.substring(0, len1-3) + x.substring(len1-2);
-                y = rows[i + 1].getElementsByTagName("TD")[1].innerHTML;
-                var len2 = y.length;
-                var timeScore2 = y.substring(0, len2-3) + y.substring(len2-2);
-                //check if the two rows should switch place:
-                if (timeScore1 > timeScore2) {
-                    //if so, mark as a switch and break the loop:
-                    shouldSwitch= true;
-                    break;
-                }
-            }
-            if (shouldSwitch) {
-                /*If a switch has been marked, make the switch
-                and mark that a switch has been done:*/
-                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                switching = true;
-            }
-        }
-    }
-    
     var timerOn = 0;
     function timer() {
         if (timerOn == 1){
@@ -192,7 +121,7 @@ crossorigin="anonymous">
         console.log(time);
     }
 
-    // Pad seconds with 0s
+    // Pad seconds with 0s - adapted from https://stackoverflow.com/a/10073788/7232648
     function pad(n, width, z) {
     z = z || '0';
     n = n + '';
@@ -204,36 +133,35 @@ crossorigin="anonymous">
         event.preventDefault(); // Cancels default action of click - https://api.jquery.com/event.preventdefault/
 
         if(document.getElementById("savedUsername").value == ""){
-            givenusername = "anon";
+            givenusername = "anon"; // If there's no username entered in the box just enter anon
         } else {
-            givenusername = document.getElementById("savedUsername").value;
+            givenusername = document.getElementById("savedUsername").value; // Otherwise use the specified name
         }
-        var scoreSec = document.getElementById("savedTime").innerHTML;
-        var scoreNum = scoreSec.replace(":", "");
+        var scoreSec = document.getElementById("savedTime").innerHTML; // Get the time from the timer
+        var scoreNum = scoreSec.replace(":", ""); // Get rid of the :
 
         // User's data in json
         var scoreData = {
             username: givenusername,
             score: scoreNum,
         }
-        scoreData = JSON.stringify(scoreData)
-        console.log("html json: " + scoreData)
+        scoreData = JSON.stringify(scoreData) // Turns whole json object into string
+        console.log("html json: " + scoreData) // Making sure it's right
         
         // Adapted from https://stackoverflow.com/a/26930355/7232648
         $.ajax({
-            url: '/save',
+            url: '/save', // Go to /save route in python
             headers: {
                 'Content-Type':'application/json' // pass as json
             },
-            data: scoreData, // Turns whole json object into string
+            data: scoreData,
             dataType: 'json',
             method: 'POST',
-            success: function (data) { // If successful, print "saved"]
-                console.log("allscores: " + data.allscores)
-                $('.topscores').text(data.allscores)
+            success: function (data) { // If successful, print success
+                console.log("Success")
             },
             error: function (error) { // If not, print an error to the console
-                //console.log("Error: " + error);
+                console.log("Error with post");
             }
         });
     }) // end button click event
