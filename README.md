@@ -2,7 +2,7 @@
 
 *An JavaScript Buzz Wire game with a gesture controlled UI, using a Myo armband, and a Python backend. Forth Year, Gesture Based UI, Software Development.*
 
-This repository contains an project assigned the assist the learning of the module Gesture Based UI. This task is worth 60% of the overall grade and is to be completed, in teams of two, by the 9th of April. 
+This repository contains a project assigned the assist the learning of the module Gesture Based UI. This task is worth 60% of the overall grade and is to be completed, in teams of two, by the 9th of April. 
 
 ## Table of Contents
 
@@ -84,7 +84,7 @@ However, we discovered another function, ```ellipse(x, y, radiusX, radiusY, rota
 
 #### Myo Controls
 
-Now that the game objects were set up we needed to control them via the Myo armband. Fortunately [Thalmic Labs](https://www.thalmic.com/) have released a JavaScript plugin [Myo JS](https://github.com/thalmiclabs/myo.js) to manage the connection with Myo, stream data and detect certain gestures. They have also provided [Myo JS Vector](https://github.com/thalmiclabs/myojs-vector), a plugin that is dependent on the previously mentioned plugin to build on top of it's functionality. It manages the data to refine the position and it's rotation to mimic the bands directional magnitude. To convert this vector data to suit the span of our canvas, we needed to multiply the *x*,*y* position by the desired height or width of the canvas and multiply the theta value by 360 to convert it to degrees. We also add a listener function waiting for the fist gesture event. When it is triggered, the game is started/restarted and the orientation is set to zero, the hoop rotated to 90 degrees at the start of the wire and it's movement is relative to the position of your hand when you start the game. For this reason it is best to start the game with the back of your hand facing upward. It's also optimal to hold your hand low and close to your body. As mentioned in the Myo JS Vector documentation, the charging light/port should be toward your hand, otherwise you will have parallel directions, i.e. up = down, right = left, etc.
+Now that the game objects were set up we needed to control them via the Myo armband. Fortunately [Thalmic Labs](https://www.thalmic.com/) have released a JavaScript plugin [Myo JS](https://github.com/thalmiclabs/myo.js) to manage the connection with Myo, stream data and detect certain gestures. They have also provided [Myo JS Vector](https://github.com/thalmiclabs/myojs-vector), a plugin that is dependent on the previously mentioned plugin to build on top of its functionality. It manages the data to refine the position and its rotation to mimic the bands directional magnitude. To convert this vector data to suit the span of our canvas, we needed to multiply the *x*,*y* position by the desired height or width of the canvas and multiply the theta value by 360 to convert it to degrees. We also add a listener function waiting for the fist gesture event. When it is triggered, the game is started or restarted. The orientation is set to zero, the hoop rotated to 90 degrees at the start of the wire and its movement is relative to the position of your hand when you start the game. For this reason, it is best to start the game with the back of your hand facing upward. Its also optimal to hold your hand low and close to your body. As mentioned in the Myo JS Vector documentation, the charging light/port should be toward your hand, otherwise you will have parallel directions, i.e. up = down, right = left, etc.
 
 #### Collisions
 
@@ -106,7 +106,13 @@ x3 = x1 + w * Math.cos(d3),
 y3 = y1 + w * Math.sin(d3);
 ```
 
-Now that we have the edges calculated, the next task was to determine if the edge points intersected with the wire path. This was complex to calculate because of the very irregular path. We found a function that we thought might serve well, ```isPointInPath(x,y)```.
+Now that we have the edges calculated, the next task was to determine if the edge points intersected with the wire path. This was complex to calculate because of the very irregular path. We found a function that we thought might serve well, ```isPointInPath(x,y)```. It did work well - just not for this task. It didn't just check if the point was on the curved line, i.e the wire, but also every point between the start and end points of the line. The solution we settled on was an adaption of a previous [project](https://emerging-technologies.github.io/problems/project.html). This project had a user draw number on a canvas, to then call the ```getImageData(x,y,width,height)```, retrieving the pixel data of the canvas. The data per pixel contains an rgb value. Using this, we took the Image Data object from a canvas containing just the wire. The we then checked the corresponding pixel data for the edge points. The wire was a shade lighter than black, so if the pixel data returned greater than 0(black or transparent), the edge point has collided with wire.
+
+With the wire collisions working, it became apparent that there was still a major collision to tackle. The user could simply take the hoop of the start of the wire and put it on top. So, we needed a collision to tell if the hoop is not on the wire. This was tackled by the ```isPointInPath(x,y)``` function mentioned above. One edge point should be on one side of the wire and the one should be on the other side. If both edge points were in or out of the path, then it must be off the wire.
+
+The hoop easily disappeared on game start, given that hands move or shake slightly involuntarily - moving the hoop below the starting point, making it off the wire to disappear. First we add a collision box at the beginning of the path to give hoop some leeway in movement. If the hoop is in the box, it is allowed be off the wire. After getting users to test the game we decided to update the collision so that if the hoop is in the collision box, it should stop the user from going down - stopping it from going off the wire. A simple check, while the hoop was in the start box, to see if the *y* value being updated is lower than the current *y* value achieved this.
+
+Finally, the last collision  is needed at the end of the wire. This was very similar to the first implementation of start collison box. Once the center point of to hoop entered the end collision  box, the user has completed the wire and the game ends.
 
 ## How To Run
 
@@ -114,7 +120,45 @@ Now that we have the edges calculated, the next task was to determine if the edg
 
 ## References
 
+[Myo](https://www.myo.com)
+
+[Myo Market](https://market.myo.com/)
+
+[Myo JS](https://github.com/thalmiclabs/myo.js)
+
+[Myo JS Vector](https://github.com/thalmiclabs/myojs-vector)
+
+[JavaScript](https://www.javascript.com/)
+
+[HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)
+
+[Python 3](https://www.python.org/download/releases/3.0/)
+
+[Docker](https://www.docker.com/)
+
+[Heroku](https://www.heroku.com/)
+
+[Canvas](https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.canvas)
+
+[Unity](https://unity3d.com)
+
+[Phaser JS](https://phaser.io/)
+
 https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/ellipse
+
+http://scienceprimer.com/draw-oval-html5-canvas
+
+https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas
+
+https://stackoverflow.com/questions/20275316/detecting-mouse-collision-with-closed-bezier-curved-shapes-in-canvas
+
+https://stackoverflow.com/questions/17125632/html5-canvas-rotate-object-without-moving-coordinates
+
+https://stackoverflow.com/questions/7707286/set-canvas-origin-to-the-lower-left-corner
+
+https://stackoverflow.com/questions/11052720/how-to-calculate-coordinates-of-third-point-in-a-triangle-2d-knowing-2-points
+
+https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInPath
 
 -----
 
