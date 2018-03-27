@@ -56,6 +56,10 @@ var Game = {
         return c.getImageData(0,0, this.c.width, this.c.height);
     },
     draw_hoop: function(x1, y1, d1, w, h){
+        // Check start collision, if true make sure y1 doesn't go lower than start_y.
+        if(this.c.s.ctx.isPointInPath(x1, y1))
+            y1 = (y1 < this.path.start.y) ? this.path.start.y : y1;
+
         this.c.m.ctx.beginPath();
         // Ref: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/ellipse
         // Easier rotate with ellipse function.
@@ -97,7 +101,7 @@ var Game = {
     },
     draw_collision_box: function(c, x, y){
         c.beginPath();
-        c.rect(x-this.hoop.w_r, y-this.hoop.w_r, this.hoop.w_r*2, this.hoop.w_r*1.25);
+        c.rect(x-this.hoop.w_r, y-this.hoop.w_r, this.hoop.w_r*2, this.hoop.w_r*1.1);
         c.stroke();
         c.closePath();
     },
@@ -124,7 +128,10 @@ var Game = {
         c.bezierCurveTo(440, 360, 420, 320, 380, 280);
         c.bezierCurveTo(320, 220, 340, 240, 400, 220);
         c.bezierCurveTo(440, 200, 485, 415, 505, 365);
-        c.bezierCurveTo(515, 325, 490, 200, this.path.end.x, this.path.end.y);
+        c.bezierCurveTo(515, 325, 490, 200, this.path.end.x, this.path.end.y);/*
+        c.bezierCurveTo(50, 50, 50, 200, 140, 325);
+        c.bezierCurveTo(140, 325, 250, 500, 390, 325);
+        c.bezierCurveTo(390, 325, 500, 200, 500, 50);*/
         c.stroke();
         c.closePath();
     },
