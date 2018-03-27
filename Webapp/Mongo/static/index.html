@@ -44,15 +44,15 @@ crossorigin="anonymous">
         console.log( "ready!" );
         $.get("/getScoreList", function(data){
             d = JSON.parse(data);
-            for (var i = 0, len = d.length; i < len; i++) {
+            console.log("dlen: " + d.length);
+            console.log("d: " + d);
+            for (var i = 0; i < d.length; i++) {
                 var username = d[i].username;
-                //$('.username').text(username);
-                console.log("username: " + d[i].username)
+                console.log(i + " username: " + d[i].username)
                 numScore = d[i].score;
                 var len = numScore.length;
                 var timeScore = numScore.substring(0, len-2) + ":" + numScore.substring(len-2);                 // Add : back in for time, just for readability - https://stackoverflow.com/a/5869593/7232648
                 console.log("score: " + timeScore)
-                //$('.score').text(timeScore);
 
 
                 var tr = document.createElement('tr');
@@ -65,18 +65,50 @@ crossorigin="anonymous">
                 tr.appendChild(td2)
                 var element = document.getElementById("topscores");
                 element.appendChild(tr);
-
-                //tbdy.appendChild(tr);
-                /*
-                var el = document.createElement("TR");
-                var node = document.createTextNode(username + ": " + timeScore)
-                el.appendChild(node);
-                var element = document.getElementById("topscores");
-                element.appendChild(el);*/
-
             }
+            sortTable();
         });
     });
+
+    function sortTable() {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("topscores");
+        switching = true;
+        /*Make a loop that will continue until
+        no switching has been done:*/
+        while (switching) {
+            //start by saying: no switching is done:
+            switching = false;
+            rows = table.getElementsByTagName("TR");
+            /*Loop through all table rows (except the
+            first, which contains table headers):*/
+            for (i = 1; i < (rows.length - 1); i++) {
+                //start by saying there should be no switching:
+                shouldSwitch = false;
+                /*Get the two elements you want to compare,
+                one from current row and one from the next:*/
+                x = rows[i].getElementsByTagName("TD")[1].innerHTML;
+                var len1 = x.length;
+                var timeScore1 = x.substring(0, len1-3) + x.substring(len1-2);
+                y = rows[i + 1].getElementsByTagName("TD")[1].innerHTML;
+                var len2 = y.length;
+                var timeScore2 = y.substring(0, len2-3) + y.substring(len2-2);
+                console.log("x: " + timeScore1 + "y: " + timeScore2)
+                //check if the two rows should switch place:
+                if (timeScore1 > timeScore2) {
+                    //if so, mark as a switch and break the loop:
+                    shouldSwitch= true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                /*If a switch has been marked, make the switch
+                and mark that a switch has been done:*/
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    }
 
     var timerOn = 0;
     function timer() {
