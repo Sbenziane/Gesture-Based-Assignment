@@ -120,7 +120,45 @@ Finally, the last collision  is needed at the end of the wire. This was very sim
 
 ## References
 
+[Myo](https://www.myo.com)
+
+[Myo Market](https://market.myo.com/)
+
+[Myo JS](https://github.com/thalmiclabs/myo.js)
+
+[Myo JS Vector](https://github.com/thalmiclabs/myojs-vector)
+
+[JavaScript](https://www.javascript.com/)
+
+[HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)
+
+[Python 3](https://www.python.org/download/releases/3.0/)
+
+[Docker](https://www.docker.com/)
+
+[Heroku](https://www.heroku.com/)
+
+[Canvas](https://docs.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.canvas)
+
+[Unity](https://unity3d.com)
+
+[Phaser JS](https://phaser.io/)
+
 https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/ellipse
+
+http://scienceprimer.com/draw-oval-html5-canvas
+
+https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Pixel_manipulation_with_canvas
+
+https://stackoverflow.com/questions/20275316/detecting-mouse-collision-with-closed-bezier-curved-shapes-in-canvas
+
+https://stackoverflow.com/questions/17125632/html5-canvas-rotate-object-without-moving-coordinates
+
+https://stackoverflow.com/questions/7707286/set-canvas-origin-to-the-lower-left-corner
+
+https://stackoverflow.com/questions/11052720/how-to-calculate-coordinates-of-third-point-in-a-triangle-2d-knowing-2-points
+
+https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPointInPath
 
 -----
 
