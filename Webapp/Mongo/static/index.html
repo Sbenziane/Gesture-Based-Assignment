@@ -28,10 +28,13 @@ crossorigin="anonymous">
           <div class="rounded" style="padding-right: 30px; padding-left: 30px; margin-right:50px; margin-top: 40px;">
           <h3>Scores</h3>
           <table id="topscores">
-                <col width="150"><col width="60">
+                <col width="30"><col width="150"><col width="40">
               <tr>
-                <th>Username</th> <th>Score</th>
+                <th>Rank</th><th>Username</th> <th>Score</th>
               </tr>
+              <table id="tablecontent">
+                    <col width="20"><col width="150"><col width="40">
+              </table>
           </table>       
           </div>
         </div>
@@ -42,20 +45,22 @@ crossorigin="anonymous">
 <script>
     $( document ).ready(function() {
         console.log( "ready!" );
+        getTable();
+    });
+
+    function getTable(){
         $.get("/getScoreList", function(data){
             d = JSON.parse(data);
-            console.log("dlen: " + d.length);
-            console.log("d: " + d);
             for (var i = 0; i < d.length; i++) {
                 var username = d[i].username;
-                console.log(i + " username: " + d[i].username)
                 numScore = d[i].score;
                 var len = numScore.length;
                 var timeScore = numScore.substring(0, len-2) + ":" + numScore.substring(len-2);                 // Add : back in for time, just for readability - https://stackoverflow.com/a/5869593/7232648
-                console.log("score: " + timeScore)
-
 
                 var tr = document.createElement('tr');
+                var td0 = document.createElement('td');
+                td0.appendChild(document.createTextNode(i + 1))
+                tr.appendChild(td0)
                 var td1 = document.createElement('td');
                 td1.appendChild(document.createTextNode(username))
                 tr.appendChild(td1)
@@ -63,12 +68,20 @@ crossorigin="anonymous">
                 td2.appendChild(document.createTextNode(timeScore))
                 //td.setAttribute('rowSpan', '2') : null;
                 tr.appendChild(td2)
-                var element = document.getElementById("topscores");
+                var element = document.getElementById("tablecontent");
                 element.appendChild(tr);
             }
             sortTable();
         });
-    });
+    }
+
+    //refresh();
+    function refresh() {
+        $('#tablecontent').empty();
+        setTimeout(refresh, 3000);
+        getTable();
+    }
+    //setTimeout(refresh, 3000);
 
     function sortTable() {
         var table, rows, switching, i, x, y, shouldSwitch;
@@ -93,7 +106,6 @@ crossorigin="anonymous">
                 y = rows[i + 1].getElementsByTagName("TD")[1].innerHTML;
                 var len2 = y.length;
                 var timeScore2 = y.substring(0, len2-3) + y.substring(len2-2);
-                console.log("x: " + timeScore1 + "y: " + timeScore2)
                 //check if the two rows should switch place:
                 if (timeScore1 > timeScore2) {
                     //if so, mark as a switch and break the loop:
@@ -109,7 +121,7 @@ crossorigin="anonymous">
             }
         }
     }
-
+    
     var timerOn = 0;
     function timer() {
         if (timerOn == 1){
