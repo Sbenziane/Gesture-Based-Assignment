@@ -34,6 +34,16 @@ crossorigin="anonymous">
               </tr>
               <table id="tablecontent">
                     <col width="20"><col width="150"><col width="40">
+                    <tr><td> 1</td><td id="u0"></td><td id="s0"></td></tr>                    
+                    <tr><td> 2</td><td id="u1"></td><td id="s1"></td></tr>
+                    <tr><td> 3</td><td id="u2"></td><td id="s2"></td></tr>
+                    <tr><td> 4</td><td id="u3"></td><td id="s3"></td></tr>
+                    <tr><td> 5</td><td id="u4"></td><td id="s4"></td></tr>
+                    <tr><td> 6</td><td id="u5"></td><td id="s5"></td></tr>
+                    <tr><td> 7</td><td id="u6"></td><td id="s6"></td></tr>
+                    <tr><td> 8</td><td id="u7"></td><td id="s7"></td></tr>
+                    <tr><td> 9</td><td id="u8"></td><td id="s8"></td></tr>
+                    <tr><td>10</td><td id="u9"></td><td id="s9"></td></tr>
               </table>
           </table>       
           </div>
@@ -45,9 +55,38 @@ crossorigin="anonymous">
 <script>
     $( document ).ready(function() {
         console.log( "ready!" );
-        getTable();
+        checkUpdate();
+    });
+    $(function() {     
+        setTimeout(checkUpdate, 1000);
     });
 
+    function checkUpdate(){
+        $.get("/getScoreList", function(data){
+            d = JSON.parse(data);
+            for (var i = 0; i < d.length; i++) {
+                var utag = "u" + i;
+                var stag = "s" + i;
+                var username = d[i].username;
+                var numScore = d[i].score;
+                var len = numScore.length;
+                var timeScore = numScore.substring(0, len-2) + ":" + numScore.substring(len-2);
+
+                /* console.log("utag: " + utag + " , stag: " + stag);
+                console.log("td: " + document.getElementById(utag).innerHTML + ", u: " + username);
+                console.log("td: " + document.getElementById(stag).innerHTML + ", s: " + timeScore); */
+
+                if(document.getElementById(utag).innerHTML != username && document.getElementById(stag).innerHTML != timeScore){
+                    document.getElementById(utag).innerHTML = username;
+                    document.getElementById(stag).innerHTML = timeScore;
+                }
+            }
+            sortTable();
+        });
+        setTimeout(checkUpdate, 1000);
+    }
+
+/*
     function getTable(){
         $.get("/getScoreList", function(data){
             d = JSON.parse(data);
@@ -73,15 +112,8 @@ crossorigin="anonymous">
             }
             sortTable();
         });
-    }
-
-    //refresh();
-    function refresh() {
-        $('#tablecontent').empty();
-        setTimeout(refresh, 3000);
-        getTable();
-    }
-    //setTimeout(refresh, 3000);
+        setTimeout(getTable, 1000);
+    }*/
 
     function sortTable() {
         var table, rows, switching, i, x, y, shouldSwitch;

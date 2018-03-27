@@ -20,7 +20,7 @@ def index():
 def getScoreList():
     user = mongo.db.users
     cursor = user.find()
-    topten = cursor.sort([('score', pymongo.ASCENDING)]).limit(10)
+    topten = cursor.sort([('score', pymongo.ASCENDING)]).limit(10) # adapted from - https://api.mongodb.com/python/current/api/pymongo/cursor.html?highlight=sort#pymongo.cursor.Cursor.sort
     topscores = dumps(topten) # adapted from https://stackoverflow.com/a/30400268/7232648
 
     #topscores = loads(topscoresL)
