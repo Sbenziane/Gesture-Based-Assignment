@@ -22,14 +22,20 @@ After deliberating over the two technologies we decided to go with the Myo armba
 ## Purpose of the Application  
 While there are a number of digital versions of the classic Buzz Wire game available online, we failed to find any that used gesture based controls over the impractical keyboard and mouse method. The fact that there was no existing online game playable in a similar fashion to the original reassured us that our application would be unique and useful, while also meeting the requirements for this assignment.  
 ### Application Design  
-When designing our web application we felt a simple approach would be best, regarding both the frontend and backend.  
+When designing our web application we felt a simple approach would be best, regarding both the look of the application ands how it works.  
 
- 
-The home page consists of the game itself, a timer 
-design of the application including the screens of the user interface and how it works.  The application can be an experimentation process for you, testing how pieces of hardware could interact or be combined with gestures.  You don’t have to solve the world economic crisis just yet.  
+The rules of any buzz wire game are the same - move the loop from the starting point to the finish, without touching the wire. Rather than a start button, we took advantage of one of the Myo's in-built commands, further explained in *[Gestures Identified as Appropriate for this Application](#gestures-identified-as-appropriate-for-this-application)* section. We also wanted to incorporate a scoring system and agreed that a time based score (quicker being better) would suit best. We then decided that due to the app's online nature, it should have a real-time worldwide leaderboard of every player's score.  
 
-## Gestures Ddentified as Appropriate for this Application  
-consider how gestures can be incorporated into the application, making a justified argument for the ones that you pick.  This is a research element for the project.  
+In regards to the design of the webpage, we decided to split it into two sections to prevent the page looking crowded. The first section, visible when the page loads, contains the game, a timer, a lightbulb, and an information icon which displays a pop up containing a guide when clicked. Each time the user makes the *start game* gesture, the timer starts. If the user hits the loop off the wire, the timer stops and a buzz noise will sound and the lightbulb will illuminate, indicating the end of the game. The section section of the page can be seen by scrolling down, and contains the leaderboard of top ten worldwide scores as well as some information relating to the context and development of the project.  
+
+## Gestures Identified as Appropriate for this Application  
+As mentioned in the previous section, we decided that due to the gesture-based nature of this game it would make sense to control all aspects of the game (including starting and restarting a game) with some of the Myo's in-built capabilities and gestures. The game can be started by making a fist, much like you would if you were holding the handle of the loop in a traditional buzz wire game. Once started, the user should release their hand as each time the Myo detects the fist gesture, it will restart the game.  
+
+Once the game has begun, the Myo uses its accelerometer and gyroscope to track the position and movement of the user's arm, allowing for rotation of the loop as well as movement in any direction along the wire. Rotation was not considered when we first began development of the game, but it became clear very quickly that rotation would be required to move the loop around bends in a realistic manner similar to the original game.  
+
+We also added gesture functionailty to activate the help pop up. If the user makes the pinch gesture, a pop up will appear on screen containing information relevant to the game.   
+
+In short, our aim with any gesture-related functionality was to keep it as close as possibly to how you would play a traditional game of buzz wire in real life. In particular, the fist gesture and position/movement functionality were heavily inspired by the traditional game.
 
 ## Hardware Used in Creating the Application  
 You are not limited to the hardware listed above.  If you have your own hardware, or hardware simulator that you wish to use, then feel free.  The purpose of each piece of hardware should be given with a comparison to other options available.  
