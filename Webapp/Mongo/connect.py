@@ -4,7 +4,7 @@ import pymongo
 from pymongo import MongoClient
 from bson.json_util import dumps, loads
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 
 mongo = PyMongo(app)
 client = MongoClient() 
@@ -13,7 +13,7 @@ collection = db.leaderboard # DB holds a collection which stores documents (docu
 
 @app.route('/')
 def index():
-    return app.send_static_file('index.html') # Just displaying the index file
+    return render_template('index.html') # Just displaying the index file
 
 @app.route('/getScoreList', methods=['GET'])
 def getScoreList():
