@@ -1,4 +1,5 @@
 var Game = {
+    buzzer : new Audio('snds/buzzer.mp3'),
     on : false,
     c : {
         m : { ctx : undefined },
@@ -41,6 +42,9 @@ var Game = {
     },
     lose_game: function(){
         // Buzz.
+        this.toggle_light_switch(),
+        window.setTimeout(this.toggle_light_switch,1750);
+        this.buzzer.play();
         this.new_game();
     },
     draw_game: function(x, y, a, w_r, h_r){
@@ -175,5 +179,8 @@ var Game = {
         this.wire_holder(this.path.start.x, this.path.start.y, 80, 20, 35);
         // Right.
         this.wire_holder(this.path.end.x, this.path.end.y, 80, 20, 35);
+    },
+    toggle_light_switch: function(){
+        $( ".bulb" ).toggleClass( "on" );
     }
 };

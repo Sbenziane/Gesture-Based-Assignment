@@ -10,11 +10,111 @@
         <link rel="stylesheet" type="text/css" href="css/style.css">
     </head>
     <body>
-        <canvas id="game" width="550" height="450">
-            Your browser does not support the HTML5 canvas tag.</canvas>
-        <canvas id="game_wire" width="550" height="450" class="hidden"></canvas>
-        <canvas id="game_start_box" width="550" height="450" class="hidden"></canvas>
-        <canvas id="game_end_box" width="550" height="450" class="hidden"></canvas>
+        <div class="header">
+            <img class="logo"src="img/logos/orange_450-150.png"> 
+            <div class="float_help">
+                <img class="help"src="img/icons/291207.png"> 
+                <div class="help_popup .fade">
+                    <div class="arrow-right"></div>
+                    <div class="myo_gesture">
+                        <img src="img/myo/double_tap.png"> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="game">
+
+            <canvas id="game" width="550" height="450">
+                Your browser does not support the HTML5 canvas tag.</canvas>
+            <canvas id="game_wire" width="550" height="450" class="hidden"></canvas>
+            <canvas id="game_start_box" width="550" height="450" class="hidden"></canvas>
+            <canvas id="game_end_box" width="550" height="450" class="hidden"></canvas>
+            
+            <div class="game-inner">
+                <img class="bulb">
+            </div>
+
+        </div>
+        <div class="spacer"></div>
+        <div class="spacer"></div>
+        <div class="footer">
+            <div id="instructions" class="paper">
+                <img class="pin" src="img/footer/notes/pin/pin_orange-S.png">
+                <div class="paper-inner">
+                    <p id="date">27/4/18</p>
+                    <table class="scoreboard">
+                        <tr>
+                            <th>Rank</th>
+                            <th>Username</th> 
+                            <th>Score</th>
+                        </tr>
+                        <tr>
+                            <td>1.</td>
+                            <td>Smith</td> 
+                            <td>2:50</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Rick</td> 
+                            <td>2:53</td>
+                        </tr>
+                        <tr>
+                            <td>3.</td>
+                            <td>Morty</td> 
+                            <td>2:59</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Regina</td> 
+                            <td>3:27</td>
+                        </tr>
+                        <tr>
+                            <td>5.</td>
+                            <td>Laura</td> 
+                            <td>3:43</td>
+                        </tr>
+                        <tr>
+                            <td>6.</td>
+                            <td>JH</td> 
+                            <td>3:94</td>
+                        </tr>
+                        <tr>
+                            <td>7.</td>
+                            <td>Frank</td> 
+                            <td>3:96</td>
+                        </tr>
+                        <tr>
+                            <td>8.</td>
+                            <td>Micheal Kors</td>
+                            <td>3:96</td>
+                        </tr>
+                        <tr>
+                            <td>9.</td>
+                            <td>Danny</td> 
+                            <td>3:97</td>
+                        </tr>
+                        <tr>
+                            <td>10.</td>
+                            <td>Lorenzo</td> 
+                            <td>4:02</td>
+                        </tr>
+                    </table>
+                </div>​
+            </div>
+            <div class="spacer"></div>
+            <div class="notes">
+                <div>
+                    <img class="about_img"src="img/footer/notes/white_note_r.png" title="About">
+                </div>
+                <div>
+                    <img class="repo_img"src="img/footer/notes/graph_note.png">         
+                    <a href="https://github.com/taraokelly/Gesture-Based-Assignment">
+                        <img class="git_img" src="img/footer/notes/git/social_128.png" title="Repository">
+                    </a>
+                </div>
+            </div>
+            <div class="spacer"></div>
+        </div>
         <script src='js/script.js'></script>
     </body>
 </html>
