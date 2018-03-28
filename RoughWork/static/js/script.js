@@ -17,19 +17,23 @@ $(".float_help .help").hover(
         fadeout_popup();
 });
 $(".float_help .help").click(function() {
-  console.log("open modal");
+    if(!Game.on)
+        toggle_tutorial();
 });
 
 Myo.on('fist', function(){
-    Game.on = true;
-    this.zeroOrientation();
+    if(!tutorial_open){
+        Game.on = true;
+        this.zeroOrientation();
+    }
 });
 Myo.on('double_tap', function(){
     if(!Game.on)
-        console.log("show modal");
+        toggle_tutorial();
+        
 });
 Myo.on('vector', _.throttle(function(vector){
-    if(Game.on){
+    if(Game.on && !tutorial_open){
         Game.update_game(vector);
     }
 }, 50));

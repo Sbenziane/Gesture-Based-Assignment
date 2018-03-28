@@ -25,6 +25,38 @@ canvas{ padding: 0; margin: auto; display: block; width: 550px; float: left; }
 .game{
     width: 700px; margin: 0 auto;
 }
+.tutorial .tingle-modal-box__content {
+    padding: 1rem 3rem;
+    font-weight: 900;
+}
+
+.tutorial h1{
+    text-align: center;
+    margin: 0 0 35px 0;
+    color: #458fa9;
+    font-size: 40px;
+    border-bottom: 3px dashed blanchedalmond;
+    padding-bottom: 15px;
+}
+
+.tutorial ul p.desc{
+    padding: 0 0 0 20px;
+    color:grey;
+    font-size: 13px;
+}
+
+.tutorial .myo_gesture{
+    width: 80px;
+    height: 80px;
+    margin: 0 calc(50% - 20px) 0 calc(50% - 60px);
+}
+
+.tutorial .myo_gesture img{
+    width: 100%;
+    height: 100%;
+}
+
+.hoop{height: 23x; width: 73px;margin: 0px 0 -8px 0;}
 
 .game-inner .bulb.on {
     content:url('../img/game/bulb/on.png');
