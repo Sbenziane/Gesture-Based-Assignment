@@ -17,18 +17,24 @@ We considered two possible hardware solutions for our project -
 + Motion tracking using a camera and coloured finger tips, using [trackingjs](https://trackingjs.com/)  
 + Electromyographic sensor based gesture recognition, using a [Myo](https://www.myo.com) armband  
 
-After deliberating over the two technologies we decided to go with the Myo armband. We chose the Myo for a number of reasons, which we outline in the *[Hardare Used in Creating the Application](#hardware-used-in-creating-the-application)* section. We decided the best way 
+After deliberating over the two technologies we decided to go with the Myo armband. We chose the Myo for a number of reasons, which we outline in the *[Hardware Used in Creating the Application](#hardware-used-in-creating-the-application)* section. We also had to consider the software options for our project and decided on a single page JavaScript web application hosted on [Heroku](https://www.heroku.com/), as this option would allow the user to access the game through any browser - arguably more accessible than a traditional native app for the [Myo Market](https://market.myo.com/).  
 
-Purpose of the application  
+## Purpose of the Application  
+While there are a number of digital versions of the classic Buzz Wire game available online, we failed to find any that used gesture based controls over the impractical keyboard and mouse method. The fact that there was no existing online game playable in a similar fashion to the original reassured us that our application would be unique and useful, while also meeting the requirements for this assignment.  
+### Application Design  
+When designing our web application we felt a simple approach would be best, regarding both the frontend and backend.  
+
+ 
+The home page consists of the game itself, a timer 
 design of the application including the screens of the user interface and how it works.  The application can be an experimentation process for you, testing how pieces of hardware could interact or be combined with gestures.  You don’t have to solve the world economic crisis just yet.  
 
-Gestures identified as appropriate for this application –  
+## Gestures Ddentified as Appropriate for this Application  
 consider how gestures can be incorporated into the application, making a justified argument for the ones that you pick.  This is a research element for the project.  
 
-Hardware used in creating the application –  
+## Hardware Used in Creating the Application  
 You are not limited to the hardware listed above.  If you have your own hardware, or hardware simulator that you wish to use, then feel free.  The purpose of each piece of hardware should be given with a comparison to other options available.  
-Architecture for the solution –  
+# Architecture for the Solution  
 the full architecture for the solution, including the class diagrams, any data models, communications and distributed elements that you are creating.  
 
-Conclusions & Recommendations –  
+## Conclusions & Recommendations  
 Conclusions are what you have learned from this project and the associated research.  Recommendations are what you would do differently if you were to undertake the project again.  The Reflective Piece – what I learned and “enjoyed”
