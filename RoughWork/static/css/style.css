@@ -22,14 +22,20 @@ html, body {
 }
 .hidden{ display:none;}
 canvas{ padding: 0; margin: auto; display: block; width: 550px; float: left; }
-.game{
-    width: 700px; margin: 0 auto;
-}
-.tutorial .tingle-modal-box__content {
-    padding: 1rem 3rem;
-    font-weight: 900;
+.game{ width: 700px; margin: 0 auto; }
+
+.game-inner{ width: 150px; float: left; }
+.game-inner .bulb.on { content:url('../img/game/bulb/on.png'); }
+.game-inner .bulb {
+    margin: 230px 0 0 0;
+    height: 200px;
+    width: 200px;
+    content:url('../img/game/bulb/off.png');
 }
 
+.myo_gesture{  background-color: black;  opacity: 0.75; border-radius: 50%; }
+
+.tutorial .tingle-modal-box__content { padding: 1rem 3rem; font-weight: 900; }
 .tutorial h1{
     text-align: center;
     margin: 0 0 35px 0;
@@ -38,43 +44,10 @@ canvas{ padding: 0; margin: auto; display: block; width: 550px; float: left; }
     border-bottom: 3px dashed blanchedalmond;
     padding-bottom: 15px;
 }
-
-.tutorial ul p.desc{
-    padding: 0 0 0 20px;
-    color:grey;
-    font-size: 13px;
-}
-
-.tutorial .myo_gesture{
-    width: 80px;
-    height: 80px;
-    margin: 0 calc(50% - 20px) 0 calc(50% - 60px);
-}
-
-.tutorial .myo_gesture img{
-    width: 100%;
-    height: 100%;
-}
-
-.hoop{height: 23x; width: 73px;margin: 0px 0 -8px 0;}
-
-.game-inner .bulb.on {
-    content:url('../img/game/bulb/on.png');
-}
-
-.game-inner .bulb {
-    margin: 230px 0 0 0;
-    height: 200px;
-    width: 200px;
-    content:url('../img/game/bulb/off.png');
-}
-
-.myo_gesture{
-    background-color: black;
-    opacity: 0.75;
-    border-radius: 50%;
-}
-
+.tutorial ul p.desc{ padding: 0 0 0 20px; color:grey; font-size: 13px;}
+.tutorial .myo_gesture{ width: 80px; height: 80px; margin: 0 calc(50% - 20px) 0 calc(50% - 60px); }
+.tutorial .myo_gesture img{ width: 100%; height: 100%; }
+img.hoop { height: 23x; width: 73px;margin: 0px 0 -8px 0;}
 .float_help {
     position: absolute;
     width: 160px;
@@ -82,7 +55,6 @@ canvas{ padding: 0; margin: auto; display: block; width: 550px; float: left; }
     top: 35px;
     right: 2.5%;
 }
-
 .float_help .help_popup {
     float: right;
     width: 100px;
@@ -95,22 +67,12 @@ canvas{ padding: 0; margin: auto; display: block; width: 550px; float: left; }
     -o-transition: opacity 3s ease-in-out;
      opacity: 0;
 }
-.float_help .help_popup.fadein {
-     opacity: 1;
-}
-.float_help .help_popup .myo_gesture, .float_help .help_popup img {
-    width: 80px;
-    height: 80px;
-    float: right;
-}
-
-.float_help .help_popup .myo_gesture{
-    margin: 0 -2px 0 0;
-}
-
+.float_help .help_popup.fadein { opacity: 1; }
+.float_help .help_popup .myo_gesture, .float_help .help_popup img { width: 80px; height: 80px; float: right; }
+.float_help .help_popup .myo_gesture{ margin: 0 -2px 0 0; }
 /* Adapted from: https://css-tricks.com/snippets/css/css-triangle/ */
 .float_help .arrow-right {
-    margin: 30 0 0 0;
+    margin: 30px 0 0 0;
     float: right;
     width: 0; 
     height: 0; 
@@ -118,15 +80,7 @@ canvas{ padding: 0; margin: auto; display: block; width: 550px; float: left; }
     border-bottom: 10px solid transparent;
     border-left: 10px solid #458fa9;
   }
-.float_help .help {
-    float: right;
-    width: 50px;
-    height: 50px;
-}
-
-.game-inner{
-    width: 150px; float: left;
-}
+.float_help .help { float: right; width: 50px; height: 50px; }
 #instructions { margin: 0 auto; width: 600px; }
 .paper { position: relative; background: #fcfc9e; }
 .paper .pin { margin: 0 auto; display: block; height: 45px; width: 45px;}
@@ -143,14 +97,16 @@ canvas{ padding: 0; margin: auto; display: block; width: 550px; float: left; }
     background-size: 100% 30px;
 }
 .paper::after {content:''; position:absolute; width:0px; top:0; left:59px; bottom:0; border-left:1px solid #fc3e14;}
-.paper table {margin-top: -7px; width: 100%;border-spacing: 0px;line-height: 1.812;}
+.paper table {padding:0;margin:0;margin-top: -7px; width: 100%;border-spacing: 0px;line-height: 1.75;}
 .paper th { text-align: left; }
 .paper td:first-child { width: 75px; }
 .paper td:nth-child(3) { width: 80px;}
 .paper #date { font-weight: bold; color: black; margin: -30px 0 40px 0; }
 
 .notes{ width: 600px; margin: 0 auto; }
-.notes .about_img, .notes div:first-child{ height: 350; width: 350; }
-.notes .repo_img, .notes div:nth-child(2){ height: 250; width: 250; }
+.notes .about_img, .notes div:first-child{ height: 350px; width: 350px; }
+.notes .repo_img, .notes div:nth-child(2){ height: 250px; width: 250px; }
 .notes div:first-child, .notes div:nth-child(2){ float: left; }
-.git_img{ width: 100px; height: 100; margin: -155 70; transform: rotate(15deg); }
+.git_img{ width: 100px; height: 100px; margin: -160px 0 0 70px; transform: rotate(15deg); }
+/* https://www.sitepoint.com/community/t/how-do-i-get-the-same-margins-padding-in-ie-ff-chrome/25641/3 */
+img {display:block;}
