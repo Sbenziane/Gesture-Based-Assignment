@@ -24,6 +24,21 @@ html, body {
 canvas{ padding: 0; margin: auto; display: block; width: 550px; float: left; }
 .game{ width: 700px; margin: 0 auto; }
 
+.timer{ height: 90px;
+        width: 150px; 
+        border: 3px solid black;
+        -webkit-border-radius: 15px;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        -moz-border-radius: 15px;
+        border-radius: 15px;
+        border-radius: 15px;
+        font-size: 55px;
+        text-align: center;
+        font-weight: bold;
+        line-height: 1.58;
+}
+
 .game-inner{ width: 150px; float: left; }
 .game-inner .bulb.on { content:url('../img/game/bulb/on.png'); }
 .game-inner .bulb {
@@ -34,6 +49,17 @@ canvas{ padding: 0; margin: auto; display: block; width: 550px; float: left; }
 }
 
 .myo_gesture{  background-color: black;  opacity: 0.75; border-radius: 50%; }
+
+.error .tingle-modal-box__content { padding: 1rem 3rem; font-weight: 900; }
+
+.error  h1{
+    text-align: center;
+    margin: 0 0 35px 0;
+    color: #e93124;
+    font-size: 40px;
+    border-bottom: 3px dashed blanchedalmond;
+    padding-bottom: 15px;
+}
 
 .tutorial .tingle-modal-box__content { padding: 1rem 3rem; font-weight: 900; }
 .tutorial h1{

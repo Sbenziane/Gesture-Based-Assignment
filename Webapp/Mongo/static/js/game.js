@@ -36,12 +36,36 @@ var Game = {
         this.draw_game(xPos, yPos, zPos, this.hoop.w_r, this.hoop.h_r);
     },
     win_game: function(){
+        var scoreData = {
+            username: undefined,
+            score: (Timer.stopTimer()).replace(":", ""),
+        }
         // Do win game stuff, like add score.
+        var person = prompt("Enter Username:", "");
+        if (person != null) {
+            // User's data in json
+            scoreData.username = person;
+            scoreData = JSON.stringify(scoreData)
+            // Adapted from https://stackoverflow.com/a/26930355/7232648
+            $.ajax({
+                url: '/save', // Go to /save route in python
+                headers: {
+                    'Content-Type':'application/json' // pass as json
+                },
+                data: scoreData,
+                dataType: 'json',
+                method: 'POST',
+                success: function (data) {},
+                error: function (error) { // If not, print an error to the console
+                    alert("Whoops! Your score failed to send.");
+                }
+            });
+        }
         this.new_game();
-        alert("Whooo");
     },
     lose_game: function(){
         // Buzz.
+        Timer.stopTimer();
         this.toggle_light_switch(),
         window.setTimeout(this.toggle_light_switch,1750);
         this.buzzer.play();
@@ -113,7 +137,7 @@ var Game = {
         // Drawn with Bezier Curves:
         // https://www.w3schools.com/tags/canvas_beziercurveto.asp
         c.beginPath();
-        c.moveTo(this.path.start.x, this.path.start.y);
+        /*c.moveTo(this.path.start.x, this.path.start.y);
         c.bezierCurveTo(50, 50, 50, 200, 40, 300);
         c.bezierCurveTo(40, 300, 30, 400, 70, 350);
         c.bezierCurveTo(70, 350, 90, 325, 80, 300);
@@ -132,10 +156,10 @@ var Game = {
         c.bezierCurveTo(440, 360, 420, 320, 380, 280);
         c.bezierCurveTo(320, 220, 340, 240, 400, 220);
         c.bezierCurveTo(440, 200, 485, 415, 505, 365);
-        c.bezierCurveTo(515, 325, 490, 200, this.path.end.x, this.path.end.y);/*
+        c.bezierCurveTo(515, 325, 490, 200, this.path.end.x, this.path.end.y); */
         c.bezierCurveTo(50, 50, 50, 200, 140, 325);
         c.bezierCurveTo(140, 325, 250, 500, 390, 325);
-        c.bezierCurveTo(390, 325, 500, 200, 500, 50);*/
+        c.bezierCurveTo(390, 325, 500, 200, 500, 50);
         c.stroke();
         c.closePath();
     },

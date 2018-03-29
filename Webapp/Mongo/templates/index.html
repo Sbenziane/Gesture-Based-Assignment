@@ -14,6 +14,8 @@
           <script src="/static/js/plugins/myo.js"></script>
           <script src="/static/js/plugins/vector.myo.js"></script>
           <script src="/static/js/plugins/tingle.min.js"></script>
+          <script src="/static/js/timer.js"></script>
+          <script src="/static/js/scoreboard.js"></script>
           <script src="/static/js/game.js"></script>
 
           <link rel="stylesheet" type="text/css" href="/static/css/plugins/tingle.min.css">
@@ -42,6 +44,12 @@
           <canvas id="game_end_box" width="550" height="450" class="hidden"></canvas>
           
           <div class="game-inner">
+                <div id="time" class="timer">0:00
+                        <!--<button onclick="startTimer()">Start</button>
+                        <button onclick="stopTimer()">Stop</button>-->
+                        
+                </div>
+                <p id="savedTime"></p>
               <img class="bulb">
           </div>
 
@@ -82,107 +90,7 @@
           </div>
           <div class="spacer"></div>
       </div>     
-    <!--  
-  <h1>Game</h1>
-      
-        <div class="row align-items-center container-fluid">
-      
-          <div class="col-lg-5" style="min-height: 400px; padding-left: 60px; border-style: solid">
-            <h2>Timer</h2>
-            <button onclick="startTimer()">Start</button>
-            <button onclick="stopTimer()">Stop</button>
-            <p id="demo"></p>
-
-            <form class="form-save" action="/save" method="post">
-              <input type="text" id="savedUsername">
-              <div>Your Score: <p id="savedTime"></p></div>
-              <div><button type='button' id="saveScore" class="btn btn-block text-white" style="background: #9243D3;">Save</button></div>         
-          </form>
-          </div>
-      
-          <div class="col-lg-7">
-            <div class="rounded" style="padding-right: 30px; padding-left: 30px; margin-right:50px; margin-top: 40px;">
-            <h3>Scores</h3>
-            <table id="topscores">
-              <col width="70"><col width="180"><col width="50">
-              <tr>
-                  <th>Rank</th><th>Username</th> <th>Score</th>
-                </tr>
-                <table id="tablecontent">
-                  <col width="70"><col width="180"><col width="50"> -->
-                  <!-- Easier to have 10 set rows rather than creating elements in javascript. Never going to have more than 10 and if less than 10 entries, remaining rows will just be blank. -->
-            <!--      <tr><td>&nbsp;1</td><td id="u0"></td><td id="s0"></td></tr>                    
-                  <tr><td>&nbsp;2</td><td id="u1"></td><td id="s1"></td></tr>
-                  <tr><td>&nbsp;3</td><td id="u2"></td><td id="s2"></td></tr>
-                  <tr><td>&nbsp;4</td><td id="u3"></td><td id="s3"></td></tr>
-                  <tr><td>&nbsp;5</td><td id="u4"></td><td id="s4"></td></tr>
-                  <tr><td>&nbsp;6</td><td id="u5"></td><td id="s5"></td></tr>
-                  <tr><td>&nbsp;7</td><td id="u6"></td><td id="s6"></td></tr>
-                  <tr><td>&nbsp;8</td><td id="u7"></td><td id="s7"></td></tr>
-                  <tr><td>&nbsp;9</td><td id="u8"></td><td id="s8"></td></tr>
-                  <tr><td>10</td><td id="u9"></td><td id="s9"></td></tr>
-                </table>
-            </table>       
-            </div>
-          </div>
-      
-        </div>-->
   <script src="/static/js/tutorial.js"></script>
   <script src="/static/js/script.js"></script>
-
-  <script>
-    var canvas = document.getElementById("game");
-
-    Game.load(document.getElementById("game_wire").getContext("2d"),
-                document.getElementById("game_start_box").getContext("2d"), 
-                document.getElementById("game_end_box").getContext("2d"), 
-                canvas.getContext("2d"), canvas.width, canvas.height);
-    Myo.connect();
-
-    $( document ).ready(function() {
-        fadein_popup();
-        window.setTimeout(fadeout_popup,6000);
-    });
-    Myo.on('connected', function(){
-           console.log("connected");
-	});
-    $(".float_help .help").hover(
-        function() {
-            fadein_popup();
-        }, function() {
-            fadeout_popup();
-    });
-    $(".float_help .help").click(function() {
-        if(!Game.on)
-            toggle_tutorial();
-    });
-
-    Myo.on('fist', function(){
-        console.log("fist");
-        if(!tutorial_open){
-            Game.on = true;
-            this.zeroOrientation();
-        }
-    });
-    Myo.on('double_tap', function(){
-        console.log("double_tap");
-        if(!Game.on)
-            toggle_tutorial();
-            
-    });
-    Myo.on('vector', _.throttle(function(vector){
-        if(Game.on && !tutorial_open){
-            Game.update_game(vector);
-        }
-    }, 50));
-
-    function fadein_popup(){
-        $(".float_help .help_popup").addClass( "fadein" );
-    }
-    function fadeout_popup(){
-        $(".float_help .help_popup").removeClass( "fadein" );
-    }
-  </script>
-
   </body>
 </html>
