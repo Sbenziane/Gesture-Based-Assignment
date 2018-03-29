@@ -35,10 +35,12 @@ Once the game has begun, the Myo uses its accelerometer and gyroscope to track t
 
 We also added gesture functionailty to activate the help pop up. If the user makes the pinch gesture, a pop up will appear on screen containing information relevant to the game.   
 
-In short, our aim with any gesture-related functionality was to keep it as close as possibly to how you would play a traditional game of buzz wire in real life. In particular, the fist gesture and position/movement functionality were heavily inspired by the traditional game.
+In short, our aim with any gesture-related functionality was to keep it as close as possible to how you would play a traditional game of buzz wire in real life. In particular, the fist gesture and position/movement functionality were heavily inspired by the traditional game.
 
 ## Hardware Used in Creating the Application  
-You are not limited to the hardware listed above.  If you have your own hardware, or hardware simulator that you wish to use, then feel free.  The purpose of each piece of hardware should be given with a comparison to other options available.  
+As mentioned in the introduction, we considered two possible hardware solutions for our project; motion tracking using a camera and [trackingjs](https://trackingjs.com/) and electromyographic sensor based gesture recognition using a [Myo](https://www.myo.com) armband. We thought the camera-based motion tracking was interesting and due to 
+
+
 # Architecture for the Solution  
 the full architecture for the solution, including the class diagrams, any data models, communications and distributed elements that you are creating.  
 
