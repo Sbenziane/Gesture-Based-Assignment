@@ -35,12 +35,24 @@ Once the game has begun, the Myo uses its accelerometer and gyroscope to track t
 
 We also added gesture functionailty to activate the help pop up. If the user makes the pinch gesture, a pop up will appear on screen containing information relevant to the game.   
 
-In short, our aim with any gesture-related functionality was to keep it as close as possibly to how you would play a traditional game of buzz wire in real life. In particular, the fist gesture and position/movement functionality were heavily inspired by the traditional game.
+In short, our aim with any gesture-related functionality was to keep it as close as possible to how you would play a traditional game of buzz wire in real life. In particular, the fist gesture and position/movement functionality were heavily inspired by the traditional game.
 
 ## Hardware Used in Creating the Application  
-You are not limited to the hardware listed above.  If you have your own hardware, or hardware simulator that you wish to use, then feel free.  The purpose of each piece of hardware should be given with a comparison to other options available.  
-# Architecture for the Solution  
+As mentioned in the introduction, we considered two possible hardware solutions for our project; motion tracking using a camera and [trackingjs](https://trackingjs.com/), and electromyographic sensor based gesture recognition using a [Myo](https://www.myo.com) armband. We thought the camera-based motion tracking was interesting and would be accessible to almost everyone due to most laptops having integrated cameras. However, when we considered the limited functionality of motion tracking versus the many different functions included in the Myo armband, it was clear that the Myo would be a better option.  
+
+Having a variety of integrated functions such as gestures, accelerometer and gyroscope (as opposed to simply tracking motion) ultimately allowed us to give the natural user interface a larger role in the project, and also made the development process as a whole easier. Had we used motion tracking the user likely would have only been able to use gestures in-game, whereas our finished project heavily features gestures and movement not only in-game, but also to start the game and to activate the help pop-up.
+
+## Architecture for the Solution  
 the full architecture for the solution, including the class diagrams, any data models, communications and distributed elements that you are creating.  
+Class diagram/data model will be one image. Diagram of how everything ties up/layout of DB.  
+
+Description of each file, will transfer to diagram?  
++ MongoDB - local, accessed by python directly. Index -> Script -> Python -> DB.  
++ connect.py - directly connected to local Mongo DB, handles saving to DB and grabbing top 10 scores from DB.  
++ templates/index.html - standard index stuff, features heading, game, timer, lightbulb, (scroll) leaderboard, creator info, github link.  
++ static/js/game.js - controls all game related logic. Drawing wire, drawing loop, updating position of loop, setting boundaries for loop (collisions), checking if loop is on wire (collisions), lightbulb and buzz noise.  
++ static/js/script.js - controls loading leaderboard/checking for leaderboard updates, starting/stopping the game's timer, saving new scores.  
++ static/js/tutorial.js - controls opening/closing the modal pop-up containing the tutorial, content of modal.  
 
 ## Conclusions & Recommendations  
 Conclusions are what you have learned from this project and the associated research.  Recommendations are what you would do differently if you were to undertake the project again.  The Reflective Piece – what I learned and “enjoyed”
