@@ -38,10 +38,11 @@ We also added gesture functionailty to activate the help pop up. If the user mak
 In short, our aim with any gesture-related functionality was to keep it as close as possible to how you would play a traditional game of buzz wire in real life. In particular, the fist gesture and position/movement functionality were heavily inspired by the traditional game.
 
 ## Hardware Used in Creating the Application  
-As mentioned in the introduction, we considered two possible hardware solutions for our project; motion tracking using a camera and [trackingjs](https://trackingjs.com/) and electromyographic sensor based gesture recognition using a [Myo](https://www.myo.com) armband. We thought the camera-based motion tracking was interesting and due to 
+As mentioned in the introduction, we considered two possible hardware solutions for our project; motion tracking using a camera and [trackingjs](https://trackingjs.com/), and electromyographic sensor based gesture recognition using a [Myo](https://www.myo.com) armband. We thought the camera-based motion tracking was interesting and would be accessible to almost everyone due to most laptops having integrated cameras. However, when we considered the limited functionality of motion tracking versus the many different functions included in the Myo armband, it was clear that the Myo would be a better option.  
 
+Having a variety of integrated functions such as gestures, accelerometer and gyroscope (as opposed to simply tracking motion) ultimately allowed us to give the natural user interface a larger role in the project, and also made the development process as a whole easier. Had we used motion tracking the user likely would have only been able to use gestures in-game, whereas our finished project heavily features gestures and movement not only in-game, but also to start the game and to activate the help pop-up.
 
-# Architecture for the Solution  
+## Architecture for the Solution  
 the full architecture for the solution, including the class diagrams, any data models, communications and distributed elements that you are creating.  
 
 ## Conclusions & Recommendations  
