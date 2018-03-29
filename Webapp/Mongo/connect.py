@@ -13,9 +13,11 @@ db = client.gestproj # DB = database
 collection = db.leaderboard # DB holds a collection which stores documents (document = entry, one document per score)
 
 # Adapted from: https://stackoverflow.com/questions/1265665/how-can-i-check-if-a-string-represents-an-int-without-using-try-except
-def representsInt(s):
+def intOverZero(s):
     try: 
-        int(s)
+        i = int(s)
+        if i <= 0:
+            return False
         return True
     except ValueError:
         return False
@@ -28,7 +30,7 @@ def my_decorator(f):
         if request.is_json:
             name = request.json["username"]
             score = request.json["score"]
-            if (len(score) >= 3) and (representsInt(score)) and (len(score) >= 3):
+            if (len(score) >= 3) and (intOverZero(score)) and (len(score) >= 3):
                 if(name.strip()):
                     request.json["username"] = "Anon"
                 if(len(name) > 20):

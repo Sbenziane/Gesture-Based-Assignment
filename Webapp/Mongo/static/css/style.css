@@ -23,29 +23,29 @@ html, body {
 .hidden{ display:none;}
 canvas{ padding: 0; margin: auto; display: block; width: 550px; float: left; }
 .game{ width: 700px; margin: 0 auto; }
-
-.timer{ height: 90px;
-        width: 150px; 
-        border: 3px solid black;
-        -webkit-border-radius: 15px;
-        -webkit-border-radius: 15px;
-        -moz-border-radius: 15px;
-        -moz-border-radius: 15px;
-        border-radius: 15px;
-        border-radius: 15px;
-        font-size: 55px;
-        text-align: center;
-        font-weight: bold;
-        line-height: 1.58;
-}
-
 .game-inner{ width: 150px; float: left; }
-.game-inner .bulb.on { content:url('../img/game/bulb/on.png'); }
+.game-inner .bulb.on { background:url('../img/game/bulb/on.png') no-repeat; }
 .game-inner .bulb {
-    margin: 230px 0 0 0;
+    margin: 60px 0 0 0;
     height: 200px;
     width: 200px;
-    content:url('../img/game/bulb/off.png');
+    background: url('../img/game/bulb/off.png') no-repeat;
+    background-size:contain;
+}
+.timer{ height: 90px;
+    width: 150px; 
+    border: 3px solid black;
+    -webkit-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    border-radius: 15px;
+    font-size: 55px;
+    text-align: center;
+    font-weight: bold;
+    line-height: 1.58;
+    margin: 70px 0 0 22.5px
 }
 
 .myo_gesture{  background-color: black;  opacity: 0.75; border-radius: 50%; }
@@ -91,7 +91,7 @@ img.hoop { height: 23px; width: 73px;margin: 0px 0 -8px 0;}
     -moz-transition: opacity 3s ease-in-out;
     -ms-transition: opacity 3s ease-in-out;
     -o-transition: opacity 3s ease-in-out;
-     opacity: 0;
+    opacity: 0;
 }
 .float_help .help_popup.fadein { opacity: 1; }
 .float_help .help_popup .myo_gesture, .float_help .help_popup img { width: 80px; height: 80px; float: right; }

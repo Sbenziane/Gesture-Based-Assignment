@@ -27,7 +27,7 @@ tutorial.setContent('<h1>Tutorial</h1>'+
         '<p class="desc">If the charging light is facing your elbow, the directional and rotational controls will be parallelised, i.e. right = left, up = down, 90 degrees = -90 degrees.</p>'+
     '</li>'+
     '<li>'+
-        '<p>It is best to start with the back of your <font color="#15d81f">hand faced upward</font> and positioned in <font color="#15d81f">front of your torso</font>.</p>'+
+        '<p>It is best to start with the <font color="#15d81f">back of your hand faced upward</font> and positioned in <font color="#15d81f">front of your torso</font>.</p>'+
         '<p class="desc">When you start the game, the zero orientation is set to the position and rotation of your hand. '+
         'Wherever your hand is on game start is considered the beginning of the wire, and the rotation of your hand is considered the hoop at 90 degrees: ' +
         '<img class="hoop" src="/static/img/tutorial/hoop.png"></p>'+
