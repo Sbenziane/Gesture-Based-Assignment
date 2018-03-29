@@ -1,14 +1,19 @@
 from flask import Flask, request, json, jsonify, render_template, abort
 from flask_pymongo import PyMongo
-import pymongo
+import pymongo, os
 from pymongo import MongoClient
 from bson.json_util import dumps, loads
 from functools import wraps
 
 app = Flask(__name__, static_url_path='/static')
 
+MONGO_URL = os.environ.get('MONGO_URL')
+if not MONGO_URL:
+    MONGO_URL = "mongodb://localhost:27017/"
+
 mongo = PyMongo(app)
-client = MongoClient() 
+client = MongoClient(MONGO_URL) 
+
 db = client.gestproj # DB = database
 collection = db.leaderboard # DB holds a collection which stores documents (document = entry, one document per score)
 
