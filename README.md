@@ -44,6 +44,15 @@ Having a variety of integrated functions such as gestures, accelerometer and gyr
 
 ## Architecture for the Solution  
 the full architecture for the solution, including the class diagrams, any data models, communications and distributed elements that you are creating.  
+Class diagram/data model will be one image. Diagram of how everything ties up/layout of DB.  
+
+Description of each file, will transfer to diagram?  
++ MongoDB - local, accessed by python directly. Index -> Script -> Python -> DB.  
++ connect.py - directly connected to local Mongo DB, handles saving to DB and grabbing top 10 scores from DB.  
++ templates/index.html - standard index stuff, features heading, game, timer, lightbulb, (scroll) leaderboard, creator info, github link.  
++ static/js/game.js - controls all game related logic. Drawing wire, drawing loop, updating position of loop, setting boundaries for loop (collisions), checking if loop is on wire (collisions), lightbulb and buzz noise.  
++ static/js/script.js - controls loading leaderboard/checking for leaderboard updates, starting/stopping the game's timer, saving new scores.  
++ static/js/tutorial.js - controls opening/closing the modal pop-up containing the tutorial, content of modal.  
 
 ## Conclusions & Recommendations  
 Conclusions are what you have learned from this project and the associated research.  Recommendations are what you would do differently if you were to undertake the project again.  The Reflective Piece – what I learned and “enjoyed”
