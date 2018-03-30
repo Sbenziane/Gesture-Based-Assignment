@@ -47,7 +47,7 @@ After considering the options, we agreed JavaScript would be ideal considering t
 + [**HTML5**](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5) - HTML(HyperText Markup Language) is simply a standardized markup language used to display and structure data on a web page. Importantly, HTML ```<canvas>``` element is used to draw graphics, on the fly, via JavaScript. We will be utilizing this feature to create our game.
 + [**JavaScript**](https://www.javascript.com/) - JavaScript is a high-level scripting language, usually partnered with HTML, that allows dynamic control of content. JavaScript the most common programming language used in web development, and can also be used for other purposes, e.g. to create device application.
 + [**Python 3**](https://www.python.org/download/releases/3.0/) - Python is a simple yet powerful programming language. It offers programmers the rare ability to focus mainly on the solution, and less on adhering to a strict syntax. We will be employing Python 3 and the [Flask](http://flask.pocoo.org/) framework for the server-side scripting. The @app.route decorator will be used to map the URL to functions in the flask application.
-+ [**Docker**](https://www.docker.com/) - Docker is a tool for clean deployment. It uses containerization to manage and encapsulate an applications dependencies and its execution.
++ [**MongoDB**](https://www.mongodb.com/) - MongoDB is a NoSQL document database. Instead of using tables and rows, like in relational databases, MongoDB is built on an arcitecture of collections and documents. Collections are collections on similar documents, and documents comprise of key-value pairs - the most basic unit of data in MongoDB.
 + [**Heroku**](https://www.heroku.com/) - Heroku is a platform as a service (PaaS). It offers a high-level cloud server based on a managed container system with integrated data services for deploying and running modern apps. 
 
 ## Implementation
@@ -116,7 +116,95 @@ Finally, the last collision  is needed at the end of the wire. This was very sim
 
 ## How To Run
 
-(how to run here)
+### Set up
+
+List of prerequisites:
+
++ [Git](https://git-scm.com/downloads)
++ [Python 3](https://www.python.org/download/releases/3.0/)
++ [Heroku Account](https://signup.heroku.com/?c=70130000000NeLCAA0&gclid=CjwKCAjwwPfVBRBiEiwAdkM0HV0DAE_WpJnbrwRzcIh4naph70MyZipAtj4V-3gPhEep8HRvLMy__RoCfrkQAvD_BwE)
++ [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
++ [MongoDB](https://www.mongodb.com/download-center?jmp=nav#community)
+
+Copy the contents of the Webapp/Mongo directory into your desired repository and initialize. 
+
+```git init```
+
+Next, login to heroku.
+
+``` 
+heroku login
+```
+
+Enter your account credentials. Once logged in, create the webapp's domain with the create command (DO NOT INCLUDE []). 
+
+```
+heroku create [name]
+```
+
+Instead, you can choose a randomly generated name by leaving out the name, but beware - the names can be whack.
+
+```
+heroku create
+```
+
+The full domain name should be returned, e.g. https://name.herokuapp.com.  Next, we have to create the mongolab add on.
+
+```
+heroku addons: create mongolab
+```
+
+The Mongo URI is then set as an environment variable and be accessed in the CLI by the following command.
+
+```
+heroku config:get MONGODB_URI
+```
+
+Another environment variable we need to add to set up the application a variable called IS_HEROKU. 
+
+```
+ heroku config:set IS_HEROKU=True
+```
+
+### Run locally
+
+Make sure Mongo is running locally, and set IS_HEROKU to False to use the development mode.
+
+```
+ heroku config:set IS_HEROKU=False
+```
+
+Now run connect.py.
+
+```
+python connect.py
+```
+
+### Deploy on Heroku
+
+Set IS_HEROKU to True to use the production mode.
+
+```
+ heroku config:set IS_HEROKU=True
+```
+
+Add everything in repository.
+
+```
+git add .
+```
+
+Stage the commit.
+
+```
+git commit -m "[commit msg]"
+```
+
+Finally, push to Heroku.
+
+```
+git push heroku master
+```
 
 ## References
 
@@ -131,6 +219,8 @@ Finally, the last collision  is needed at the end of the wire. This was very sim
 [JavaScript](https://www.javascript.com/)
 
 [HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)
+
+[**MongoDB**](https://www.mongodb.com/)
 
 [Python 3](https://www.python.org/download/releases/3.0/)
 
