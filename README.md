@@ -26,14 +26,14 @@ When designing our web application we felt a simple approach would be best, rega
 
 The rules of any buzz wire game are the same - move the loop from the starting point to the finish, without touching the wire. Rather than a start button, we took advantage of one of the Myo's in-built commands, further explained in *[Gestures Identified as Appropriate for this Application](#gestures-identified-as-appropriate-for-this-application)* section. We also wanted to incorporate a scoring system and agreed that a time based score (quicker being better) would suit best. We then decided that due to the app's online nature, it should have a real-time worldwide leaderboard of every player's score.  
 
-In regards to the design of the webpage, we decided to split it into two sections to prevent the page looking crowded. The first section, visible when the page loads, contains the game, a timer, a lightbulb, and an information icon which displays a pop up containing a guide when clicked. Each time the user makes the *start game* gesture, the timer starts. If the user hits the loop off the wire, the timer stops and a buzz noise will sound and the lightbulb will illuminate, indicating the end of the game. The section section of the page can be seen by scrolling down, and contains the leaderboard of top ten worldwide scores as well as some information relating to the context and development of the project.  
+In regards to the design of the webpage, we decided to split it into two sections to prevent the page looking crowded. The first section, visible when the page loads, contains the game, a timer, a lightbulb, and an information icon which displays a pop-up modal containing a guide when clicked. Each time the user makes the *start game* gesture, the timer starts. If the user hits the loop off the wire, the timer stops and a buzz noise will sound and the lightbulb will illuminate, indicating the end of the game. The section section of the page can be seen by scrolling down, and contains the leaderboard of top ten worldwide scores as well as some information relating to the context and development of the project.  
 
 ## Gestures Identified as Appropriate for this Application  
 As mentioned in the previous section, we decided that due to the gesture-based nature of this game it would make sense to control all aspects of the game (including starting and restarting a game) with some of the Myo's in-built capabilities and gestures. The game can be started by making a fist, much like you would if you were holding the handle of the loop in a traditional buzz wire game. Once started, the user should release their hand as each time the Myo detects the fist gesture, it will restart the game.  
 
 Once the game has begun, the Myo uses its accelerometer and gyroscope to track the position and movement of the user's arm, allowing for rotation of the loop as well as movement in any direction along the wire. Rotation was not considered when we first began development of the game, but it became clear very quickly that rotation would be required to move the loop around bends in a realistic manner similar to the original game.  
 
-We also added gesture functionailty to activate the help pop up. If the user makes the pinch gesture, a pop up will appear on screen containing information relevant to the game.   
+We also added gesture functionailty to activate the help pop-up. If the user makes the pinch gesture, a pop-up will appear on screen containing information relevant to the game.   
 
 In short, our aim with any gesture-related functionality was to keep it as close as possible to how you would play a traditional game of buzz wire in real life. In particular, the fist gesture and position/movement functionality were heavily inspired by the traditional game.
 
@@ -43,16 +43,24 @@ As mentioned in the introduction, we considered two possible hardware solutions 
 Having a variety of integrated functions such as gestures, accelerometer and gyroscope (as opposed to simply tracking motion) ultimately allowed us to give the natural user interface a larger role in the project, and also made the development process as a whole easier. Had we used motion tracking the user likely would have only been able to use gestures in-game, whereas our finished project heavily features gestures and movement not only in-game, but also to start the game and to activate the help pop-up.
 
 ## Architecture for the Solution  
-the full architecture for the solution, including the class diagrams, any data models, communications and distributed elements that you are creating.  
+Our application is split into three categories - frontend, backend, and database. The architecture of each is described below.  
+
+**Frontend**  
+The frontend of our application comprises of one html page and three associated Javascript files.
++ *templates/index.html* - The index.html file gives our application a face, and allows users to interact with the application in a simple manner. It contains the webpage heading, the game container, the timer, a lightbulb, tutorial button, the worldwide leaderboard, information regarding the creators, and a link to the project's github repository. The file also contains some JavaScript code, which loads the game, connects the Myo armband, handles specific Myo gestures, and controls the opening and closing of the tutorial.   
++ static/js/game.js - This controls all game related logic, including drawing the wire and loop and updating the position of the loop. It also handles creating collision boxes for detecting when the loop is off the wire, and checking if loop is on wire every time the loop position updates. If the user loses a game, the file will trigger the lightbulb and buzz noise.  
++ static/js/script.js - The script.js file controls the leaderboard, timer, and saving new scores. The leaderboard will populate when the page is first opened, and every second after that the script will check to see if any entries in the top ten scores have changed and if so, will change the relative entry in the page leaderboard. The file also controls starting and stopping the game's timer, as well as saving a user's username and score to the database when they complete a game.   
++ static/js/tutorial.js - When the user makes a double-tap gesture, the index.html file will call a method in the tutorial.js file to open or close the tutorial pop-up, depending on if the pop-up is already open or not. The file also sets the content of the pop-up.  
+
+**Backend**
+
+
+
 Class diagram/data model will be one image. Diagram of how everything ties up/layout of DB.  
 
 Description of each file, will transfer to diagram?  
 + MongoDB - local, accessed by python directly. Index -> Script -> Python -> DB.  
 + connect.py - directly connected to local Mongo DB, handles saving to DB and grabbing top 10 scores from DB.  
-+ templates/index.html - standard index stuff, features heading, game, timer, lightbulb, (scroll) leaderboard, creator info, github link.  
-+ static/js/game.js - controls all game related logic. Drawing wire, drawing loop, updating position of loop, setting boundaries for loop (collisions), checking if loop is on wire (collisions), lightbulb and buzz noise.  
-+ static/js/script.js - controls loading leaderboard/checking for leaderboard updates, starting/stopping the game's timer, saving new scores.  
-+ static/js/tutorial.js - controls opening/closing the modal pop-up containing the tutorial, content of modal.  
 
 ## Conclusions & Recommendations  
 Conclusions are what you have learned from this project and the associated research.  Recommendations are what you would do differently if you were to undertake the project again.  The Reflective Piece – what I learned and “enjoyed”
