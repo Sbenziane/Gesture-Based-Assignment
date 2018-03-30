@@ -11,9 +11,6 @@ var canvas = document.getElementById("game");
         fadein_popup();
         window.setTimeout(fadeout_popup,6000);
     });
-    Myo.on('connected', function(){
-           console.log("connected");
-	});
     $(".float_help .help").hover(
         function() {
             fadein_popup();
@@ -26,7 +23,6 @@ var canvas = document.getElementById("game");
     });
 
     Myo.on('fist', function(){
-        console.log("fist");
         if(!tutorial_open){
             Game.on = true;
             Timer.startTimer();
@@ -34,7 +30,6 @@ var canvas = document.getElementById("game");
         }
     });
     Myo.on('double_tap', function(){
-        console.log("double_tap");
         if(!Game.on)
             toggle_tutorial();
             

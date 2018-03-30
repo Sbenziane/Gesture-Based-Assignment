@@ -7,15 +7,16 @@ from functools import wraps
 
 app = Flask(__name__, static_url_path='/static')
 
-MONGO_URL = os.environ.get('MONGO_URL')
-if not MONGO_URL:
-    MONGO_URL = "mongodb://localhost:27017/"
+production = os.environ.get('IS_HEROKU', None)
+
+if production:
+    MONGO_URI = os.environ.get('MONGODB_URI')
+else:
+    MONGO_URI = "mongodb://localhost:27017/"
+
+app.config['MONGO_URI'] = MONGO_URI
 
 mongo = PyMongo(app)
-client = MongoClient(MONGO_URL) 
-
-db = client.gestproj # DB = database
-collection = db.leaderboard # DB holds a collection which stores documents (document = entry, one document per score)
 
 # Adapted from: https://stackoverflow.com/questions/1265665/how-can-i-check-if-a-string-represents-an-int-without-using-try-except
 def intOverZero(s):
@@ -36,7 +37,7 @@ def my_decorator(f):
             name = request.json["username"]
             score = request.json["score"]
             if (len(score) >= 3) and (intOverZero(score)) and (len(score) >= 3):
-                if(name.strip()):
+                if(len(name.strip()) < 1):
                     request.json["username"] = "Anon"
                 if(len(name) > 20):
                     request.json["username"] = name[:20]
@@ -52,7 +53,8 @@ def index():
 
 @app.route('/getScoreList', methods=['GET'])
 def getScoreList():
-    cursor = collection.find() # collection.find returns all documents in a Cursor object 
+    scores = mongo.db.scores
+    cursor = scores.find()
     topten = cursor.sort([('score', pymongo.ASCENDING)]).limit(10) # Sort the returned documents based on score (ascending - lower score(quicker time) is better), limit results to 10 (only need top 10). Adapted from - https://api.mongodb.com/python/current/api/pymongo/cursor.html?highlight=sort#pymongo.cursor.Cursor.sort
     topscores = dumps(topten) # adapted from https://stackoverflow.com/a/30400268/7232648
     return topscores
@@ -60,13 +62,15 @@ def getScoreList():
 @app.route('/save', methods=['GET', 'POST'])
 @my_decorator
 def save():
-    print("Reached save backend") # Making sure the Save button actually reaches here
-    scoreData = request.json # Get the JSON data that came with the POST request
-    print("score data: " + str(scoreData)) # Making sure the data looks right
-    _id = collection.insert(scoreData) # Add the data to the collection
-    if collection.find_one({'_id': _id}): # check if exists - https://stackoverflow.com/questions/25163658/mongodb-return-true-if-document-exists
+    print("Reached save backend")
+    scoreData = request.json
+    print("score data: " + str(scoreData))
+    scores = mongo.db.scores
+    _id = scores.insert(scoreData)
+    if scores.find_one({'_id': _id}): # check if exists - https://stackoverflow.com/questions/25163658/mongodb-return-true-if-document-exists
         return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
     return json.dumps({'error':True}), 500, {'ContentType':'application/json'} 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if not production:
+    if __name__ == '__main__':
+        app.run(debug=True)

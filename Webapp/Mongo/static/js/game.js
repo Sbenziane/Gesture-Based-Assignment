@@ -45,10 +45,7 @@ var Game = {
         if (person != null) {
             // User's data in json
             scoreData.username = person;
-            alert("ADD " + scoreData.username);
-            console.log(scoreData);
-            scoreData = JSON.stringify(scoreData)
-            console.log(scoreData);
+            scoreData = JSON.stringify(scoreData);
             // Adapted from https://stackoverflow.com/a/26930355/7232648
             $.ajax({
                 url: '/save', // Go to /save route in python
@@ -159,10 +156,7 @@ var Game = {
         c.bezierCurveTo(440, 360, 420, 320, 380, 280);
         c.bezierCurveTo(320, 220, 340, 240, 400, 220);
         c.bezierCurveTo(440, 200, 485, 415, 505, 365);
-        c.bezierCurveTo(515, 325, 490, 200, this.path.end.x, this.path.end.y); /*
-        c.bezierCurveTo(50, 50, 50, 200, 140, 325);
-        c.bezierCurveTo(140, 325, 250, 500, 390, 325);
-        c.bezierCurveTo(390, 325, 500, 200, 500, 50);*/
+        c.bezierCurveTo(515, 325, 490, 200, this.path.end.x, this.path.end.y);
         c.stroke();
         c.closePath();
     },
