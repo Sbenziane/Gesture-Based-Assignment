@@ -8,7 +8,16 @@ Develop an application with a Natural User Interface(NUI), i.e. controlled by na
 + Each project should be developed by teams of two.
 + This task is worth 60% of the overall grade and is to be completed, in teams of two, by the 9th of April. 
 
-*Team Members: [Rebecca Kane](https://github.com/rebeccabernie)&npsb;&npsb;/&npsb;&npsb;[Tara O'Kelly](https://github.com/taraokelly)*
+*Team Members: [Rebecca Kane](https://github.com/rebeccabernie)&npsb;&npsb;/&npsb;&npsb;[Tara O'Kelly](https://github.com/taraokelly)*  
+
+### Table of Contents  
+[Introduction](#introduction)  
+[Purpose of the Application](#purpose-of-the-application)  
+[Gestures Identified as Appropriate for this Application](#gestures-identified-as-appropriate-for-this-application)  
+[Hardware Used in Creating the Application](#hardware-used-in-creating-the-application)  
+[Architecture for the Solution](#architecture-for-the-solution)  
+
+
 
 ## Introduction
 Upon hearing the specifications of the project, we quickly formulated an idea to build a buzz wire game. This childhood game, very familiar to most, seemed like a ideal application to be controlled by gestures, as opposed to a feigned, impractical buzz wire game controlled by keyboard or mouse controls. With a broad idea as to what the end result of this project should be, we began brainstorming the actual implementation.
@@ -43,10 +52,10 @@ As mentioned in the introduction, we considered two possible hardware solutions 
 Having a variety of integrated functions such as gestures, accelerometer and gyroscope (as opposed to simply tracking motion) ultimately allowed us to give the natural user interface a larger role in the project, and also made the development process as a whole easier. Had we used motion tracking the user likely would have only been able to use gestures in-game, whereas our finished project heavily features gestures and movement not only in-game, but also to start the game and to activate the help pop-up.
 
 ## Architecture for the Solution  
-Our application is split into three categories - frontend, backend, and database. The architecture of each is described below.  
+Our application is split into three categories - front-end, back-end, and database, each of which is described below.  
 
-**Frontend**  
-The frontend of our application comprises of one html page and three associated Javascript files.  
+**Front-End**  
+The front-end of our application comprises of one html page and three associated Javascript files.  
 
 + **templates/index.html** - The `index.html` file gives our application a face, and allows users to interact with the application in a simple manner. It contains the webpage heading, the game container, the timer, a lightbulb, tutorial button, the worldwide leaderboard, information regarding the creators, and a link to the project's github repository. The file also contains some JavaScript code, which loads the game, connects the Myo armband, handles specific Myo gestures, and controls the opening and closing of the tutorial.   
 + **static/js/game.js** - This controls all game related logic, including drawing the wire and loop and updating the position of the loop, as well as saving the user's data upon winning a game. It also handles creating collision boxes for detecting when the loop is off the wire, and checking if the loop is on the wire every time the loop position updates. If the user loses a game, the file will trigger the lightbulb and buzz noise and the game and timer will be reset. If the user wins a game, they are asked to enter a username, which is then pushed with their score to `connect.py`to be saved to the database. Note that user scores are saved without the `:` to make it easier to compare how high or low a score is, for example 2:09 becomes 209, 0:59 becomes 059, 3:00 becomes 300.
@@ -55,8 +64,8 @@ The frontend of our application comprises of one html page and three associated 
 + **static/js/timer.js** - This file controls the starting, updating, and stopping of the game's timer, including timer formatting.  
 + **static/js/tutorial.js** - When the user makes a double-tap gesture, the `index.html` file will call a method in the `tutorial.js` file to open or close the tutorial pop-up, depending on if the pop-up is already open or not. The file also sets the content of the pop-up.  
 
-**Backend**
-The backend of our application consists of only one simple Python file, `connect.py`. This file is responsible for passing data to and from the MongoDB *leaderboard* document. The file first checks to see if the application is being run in development or production mode, and configures variables related to MongoDB configuration accordingly.  
+**Back-End**  
+The back-end of our application consists of only one simple Python file, `connect.py`. This file is responsible for passing data to and from the MongoDB *leaderboard* document. The file first checks to see if the application is being run in development or production mode, and configures variables related to MongoDB configuration accordingly.  
 There are five methods in this file, three of which are related to routes called by the `index.html` file.  
 
 + **index()**, related to http://buzzwire.herokuapp.com/. This method simply returns the index.html file.  
@@ -86,15 +95,20 @@ We used MongoDB locally as our database, which is only accessed directly by the 
             "score": "256"
             }
 
+### Diagram of Architecture  
+For the sake of tidiness, the css, img and snds folders have not been included in this diagram.  
+![architecturediagram](https://user-images.githubusercontent.com/14957616/38140885-d0ee9078-342d-11e8-9078-429a3ba38a3e.png)  
 
-### Diagram of Architecture
-For the sake of tidiness, 
-![architecturediagram](https://user-images.githubusercontent.com/14957616/38140885-d0ee9078-342d-11e8-9078-429a3ba38a3e.png)
+### Deployment on Heroku  
+While the application works fine in its own right, we felt it should be more accessible. We assumed anyone without a background in software development would not be as comfortable as we are with downloading the repository, installing all dependencies, starting MongoDB from a command line and finally running the web application. Even for a user with good knowledge of these aspects, there is still a chance that something might not install right or versions of dependencies might differ. We felt these possible problems, not to mention the sheer trouble any user would have to go to in order to play the game, would really detract from the simplicity of the game itself and discourage anyone from using it.  
+
+We came to the conclusion that it would be be best to deploy the application on [Heroku](https://www.heroku.com/). While Heroku took some time to get set up and proved tricky at times, we managed to deploy the app with the help of [Heroku's Python Documentation](https://devcenter.heroku.com/categories/python) and some online research. All responsibility regarding installation has now been taken away from the user, leaving them with two very simple tasks - open a browser, and navigate to http://buzzwire.herokuapp.com.  
+
+Should you wish to download this repository and deploy the app from your own machine, we have included a guide on [How To Manually Run the Finished Application](#how-to-manually-run-the-finished-application), which includes a guide on deployment on Heroku.  
 
 ## How To Manually Run the Finished Application
 
 ### Set up
-
 List of prerequisites:
 
 + [Git](https://git-scm.com/downloads)
