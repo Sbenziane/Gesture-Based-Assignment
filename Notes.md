@@ -128,7 +128,9 @@ List of prerequisites:
 
 Copy the contents of the Webapp/Mongo directory into your desired repository and initialize. 
 
-```git init```
+```
+git init
+```
 
 Next, login to heroku.
 
