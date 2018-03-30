@@ -12,7 +12,7 @@ production = os.environ.get('IS_HEROKU', None)
 if production:
     MONGO_URI = os.environ.get('MONGODB_URI')
 else:
-    MONGO_URI = "mongodb://localhost:27017/"
+    MONGO_URI = "mongodb://localhost:27017/gestureProj"
 
 app.config['MONGO_URI'] = MONGO_URI
 
