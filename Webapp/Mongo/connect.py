@@ -36,7 +36,7 @@ def my_decorator(f):
         if request.is_json:
             name = request.json["username"]
             score = request.json["score"]
-            if (len(score) >= 3) and (intOverZero(score)) and (len(score) >= 3):
+            if (len(score) >= 3) and (intOverZero(score)):
                 if(len(name.strip()) < 1):
                     request.json["username"] = "Anon"
                 if(len(name) > 20):
