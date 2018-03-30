@@ -8,7 +8,7 @@ Develop an application with a Natural User Interface(NUI), i.e. controlled by na
 + Each project should be developed by teams of two.
 + This task is worth 60% of the overall grade and is to be completed, in teams of two, by the 9th of April. 
 
-*Team Members: [Rebecca Kane](https://github.com/rebeccabernie)&npsb;&npsb;/&npsb;&npsb;[Tara O'Kelly](https://github.com/taraokelly)*  
+*Team Members: [Rebecca Kane](https://github.com/rebeccabernie) and [Tara O'Kelly](https://github.com/taraokelly)*  
 
 ### Table of Contents  
 [Introduction](#introduction)  
@@ -17,7 +17,7 @@ Develop an application with a Natural User Interface(NUI), i.e. controlled by na
 [Hardware Used in Creating the Application](#hardware-used-in-creating-the-application)  
 [Game Implementation](#game-implementation)  
 [Architecture for the Solution](#architecture-for-the-solution)  
-[Conclusion and Recommendations](#conclusions-and-recommendations)  
+[Conclusions and Recommendations](#conclusions-and-recommendations)  
 [List of References](#list-of-references)  
 
 **Other**  
@@ -28,7 +28,7 @@ Develop an application with a Natural User Interface(NUI), i.e. controlled by na
 Upon hearing the specifications of the project, we quickly formulated an idea to build a buzz wire game. This childhood game, very familiar to most, seemed like a ideal application to be controlled by gestures, as opposed to a feigned, impractical buzz wire game controlled by keyboard or mouse controls. With a broad idea as to what the end result of this project should be, we began brainstorming the actual implementation.
 
 We considered two possible hardware solutions for our project -  
-+ Motion tracking using a camera and coloured finger tips, using [trackingjs](https://trackingjs.com/)  
++ Motion tracking using a camera and coloured finger tips, using [tracking.js](https://trackingjs.com/)  
 + Electromyographic sensor based gesture recognition, using a [Myo](https://www.myo.com) armband  
 
 After deliberating over the two technologies we decided to go with the Myo armband. We chose the Myo for a number of reasons, which we outline in the *[Hardware Used in Creating the Application](#hardware-used-in-creating-the-application)* section. We also had to consider the software options for our project, and after some brief research discovered that Myo armbands are compatible with mulitiple languages including C# and JavaScript, which were particularly interested in.  
@@ -41,30 +41,32 @@ We considered the following platforms for Myo development:
 After more research and some discussion, we decided on a single page JavaScript web application, aiming to host it on [Heroku](https://www.heroku.com/). This option would allow the user to access the game through any browser - arguably more accessible than a traditional native app for the [Myo Market](https://market.myo.com/). Our final agreed list of technologies is as follows:  
 + [HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5) - a standardized markup language used to display and structure data on a web page. Importantly, HTML ```<canvas>``` element is used to draw graphics, on the fly, via JavaScript. We will be utilizing this feature to create our game.  
 + [JavaScript](https://www.javascript.com/) - a high-level scripting language, usually partnered with HTML, that allows dynamic control of content. The most common programming language used in web development, and can also be used for other purposes, e.g. to create device application.  
-+ [Python 3](https://www.python.org/download/releases/3.0/) - a simple yet powerful, Python offers programmers the rare ability to focus mainly on the solution, and less on adhering to a strict syntax. We will be employing Python 3 and the [Flask](http://flask.pocoo.org/) framework for the server-side scripting. The @app.route decorator will be used to map the URL to functions in the flask application.  
++ [Python 3](https://www.python.org/download/releases/3.0/) - a simple yet powerful language, Python offers programmers the rare ability to focus mainly on the solution, and less on adhering to a strict syntax. We will be employing Python 3 and the [Flask](http://flask.pocoo.org/) framework for the server-side scripting. The `@app.route` decorator will be used to map the URL to functions in the flask application.  
 + [MongoDB](https://www.mongodb.com/) - a NoSQL document database. Instead of using tables and rows, like in relational databases, MongoDB is built on an arcitecture of collections and documents. Collections are collections on similar documents, and documents comprise of key-value pairs - the most basic unit of data in MongoDB.
 + [Heroku](https://www.heroku.com/) - a platform as a service (PaaS). Heroku offers a high-level cloud server based on a managed container system with integrated data services for deploying and running modern apps.  
 
 ## Purpose of the Application  
 While there are a number of digital versions of the classic Buzz Wire game available online, we failed to find any that used gesture based controls over the impractical keyboard and mouse method. The fact that there was no existing online game playable in a similar fashion to the original reassured us that our application would be unique and useful, while also meeting the requirements for this assignment.  
 ### Application Design  
-When designing our web application we felt a simple approach would be best, regarding both the look of the application ands how it works.  
+When designing our web application we felt a simple approach would be best, regarding both the look of the application and how it works.  
 
 The rules of any buzz wire game are the same - move the loop from the starting point to the finish, without touching the wire. Rather than a start button, we took advantage of one of the Myo's in-built commands, further explained in *[Gestures Identified as Appropriate for this Application](#gestures-identified-as-appropriate-for-this-application)* section. We also wanted to incorporate a scoring system and agreed that a time based score (quicker being better) would suit best. We then decided that due to the app's online nature, it should have a real-time worldwide leaderboard of every player's score.  
 
-In regards to the design of the webpage, we decided to split it into two sections to prevent the page looking crowded. The first section, visible when the page loads, contains the game, a timer, a lightbulb, and an information icon which displays a pop-up modal containing a guide when clicked. Each time the user makes the *start game* gesture, the timer starts. If the user hits the loop off the wire, the timer stops and a buzz noise will sound and the lightbulb will illuminate, indicating the end of the game. The section section of the page can be seen by scrolling down, and contains the leaderboard of top ten worldwide scores as well as some information relating to the context and development of the project.  
+In regards to the design of the webpage, we decided to split it into two sections to prevent the page looking crowded. The first section, visible when the page loads, contains the game, a timer, a lightbulb, and an information icon which displays a pop-up modal containing a guide when clicked. Each time the user makes the *start game* gesture, the timer starts. If the user hits the loop off the wire, the timer stops and a buzz noise will sound and the lightbulb will illuminate, indicating the end of the game. The second section of the page can be seen by scrolling down, and contains the leaderboard of top ten worldwide scores as well as some information relating to the context and development of the project.  
 
 ## Gestures Identified as Appropriate for this Application  
 As mentioned in the previous section, we decided that due to the gesture-based nature of this game it would make sense to control all aspects of the game (including starting and restarting a game) with some of the Myo's in-built capabilities and gestures. The game can be started by making a fist, much like you would if you were holding the handle of the loop in a traditional buzz wire game. Once started, the user should release their hand as each time the Myo detects the fist gesture, it will restart the game.  
 
 Once the game has begun, the Myo uses its accelerometer and gyroscope to track the position and movement of the user's arm, allowing for rotation of the loop as well as movement in any direction along the wire. Rotation was not considered when we first began development of the game, but it became clear very quickly that rotation would be required to move the loop around bends in a realistic manner similar to the original game.  
 
-We also added gesture functionailty to activate the help pop-up. If the user makes the pinch gesture, a pop-up will appear on screen containing information relevant to the game.   
+We also added gesture functionailty to activate the help pop-up. If the user makes the double-tap gesture, a pop-up will appear on screen containing information relevant to the game.   
 
-In short, our aim with any gesture-related functionality was to keep it as close as possible to how you would play a traditional game of buzz wire in real life. In particular, the fist gesture and position/movement functionality were heavily inspired by the traditional game.
+In short, our aim with any gesture-related functionality was to keep it as close as possible to how you would play a traditional game of buzz wire in real life. In particular, the fist gesture and position/movement functionality were heavily inspired by the traditional game.  
+
+![gesturesimg](https://user-images.githubusercontent.com/14957616/38145343-af3ebf26-3440-11e8-911b-3767827c656b.png)
 
 ## Hardware Used in Creating the Application  
-As mentioned in the introduction, we considered two possible hardware solutions for our project; motion tracking using a camera and [trackingjs](https://trackingjs.com/), and electromyographic sensor based gesture recognition using a [Myo](https://www.myo.com) armband. We thought the camera-based motion tracking was interesting and would be accessible to almost everyone due to most laptops having integrated cameras. However, when we considered the limited functionality of motion tracking versus the many different functions included in the Myo armband, it was clear that the Myo would be a better option.  
+As mentioned in the introduction, we considered two possible hardware solutions for our project; motion tracking using a camera and [tracking.js](https://trackingjs.com/), and electromyographic sensor based gesture recognition using a [Myo](https://www.myo.com) armband. We thought the camera-based motion tracking was interesting and would be accessible to almost everyone due to most laptops having integrated cameras. However, when we considered the limited functionality of motion tracking versus the many different functions included in the Myo armband, it was clear that the Myo would be a better option.  
 
 Having a variety of integrated functions such as gestures, accelerometer and gyroscope (as opposed to simply tracking motion) ultimately allowed us to give the natural user interface a larger role in the project, and also made the development process as a whole easier. Had we used motion tracking the user likely would have only been able to use gestures in-game, whereas our finished project heavily features gestures and movement not only in-game, but also to start the game and to activate the help pop-up.  
 
@@ -134,7 +136,7 @@ Finally, the last collision  is needed at the end of the wire. This was very sim
 Our application is split into three categories - front-end, back-end, and database, each of which is described below.  
 
 **Front-End**  
-The front-end of our application comprises of one html page and three associated Javascript files.  
+The front-end of our application comprises of one html page and five associated Javascript files.  
 
 + **templates/index.html** - The `index.html` file gives our application a face, and allows users to interact with the application in a simple manner. It contains the webpage heading, the game container, the timer, a lightbulb, tutorial button, the worldwide leaderboard, information regarding the creators, and a link to the project's github repository. The file also contains some JavaScript code, which loads the game, connects the Myo armband, handles specific Myo gestures, and controls the opening and closing of the tutorial.   
 + **static/js/game.js** - This controls all game related logic, including drawing the wire and loop and updating the position of the loop, as well as saving the user's data upon winning a game. It also handles creating collision boxes for detecting when the loop is off the wire, and checking if the loop is on the wire every time the loop position updates. If the user loses a game, the file will trigger the lightbulb and buzz noise and the game and timer will be reset. If the user wins a game, they are asked to enter a username, which is then pushed with their score to `connect.py`to be saved to the database. Note that user scores are saved without the `:` to make it easier to compare how high or low a score is, for example 2:09 becomes 209, 0:59 becomes 059, 3:00 becomes 300.
@@ -185,7 +187,7 @@ We came to the conclusion that it would be be best to deploy the application on 
 
 Should you wish to download this repository and deploy the app from your own machine, we have included a guide on [How To Manually Run the Finished Application](#how-to-manually-run-the-finished-application), which includes a guide on deployment on Heroku.  
 
-## Conclusions & Recommendations  
+## Conclusions and Recommendations  
 While we had a lot of previous experience working with Python, Flask, JavaScript, and some experience of Heroku, neither of us had much gesture-based development experience. Choosing to make a Buzz Wire game was a relatively quick decision for us, as we both agreed that not only should it satisfy all requirements for the project, but it would also be a bit of fun when completed. Further research leading us to discover that there were no gesture-based Buzz Wire games online reassured us that we had made a good decision. We carried out extensive research as to what technologies we could and should use both in terms of hardware and software, as described in the *[Introduction](#introduction)* and *[Hardware Used in Creating the Application](#hardware-used-in-creating-the-application)* sections. After completing this application, we both feel significantly more capable and comfortable working with gesture-based technologies and would certainly be more likely to incorporate the technologies in future projects.  
 
 As for recommendations, we really don't have any major regrets regarding any part of the development process. Perhaps the standard "starting earlier" regret, but only for the sake of having the project finished sooner as opposed to fitting more features into the application. We were happy with how we planned and organised the project both before and during development and would only make very minor changes next time, such as maybe adding in some extra levels or different types of games. However, we do feel that for an assignment of this scope we created a well-rounded, clean application, keeping the user experience in mind at all times.  
@@ -261,7 +263,7 @@ git push heroku master
 
 [HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)
 
-[**MongoDB**](https://www.mongodb.com/)
+[MongoDB](https://www.mongodb.com/)
 
 [Python 3](https://www.python.org/download/releases/3.0/)
 
@@ -293,4 +295,6 @@ https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/isPoin
 
 -----
 
-__*Rebecca Kane - G00320698@gmit.ie*__ | __*Tara O'Kelly - G00322214@gmit.ie*__
+__*Rebecca Kane - G00320698@gmit.ie*__ | __*Tara O'Kelly - G00322214@gmit.ie*__  
+  
+*[back to top](https://github.com/taraokelly/Gesture-Based-Assignment)*
