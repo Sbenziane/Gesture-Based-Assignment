@@ -142,7 +142,7 @@ Enter your account credentials. Once logged in, create the webapp's domain with 
 heroku create [name]
 ```
 
-Instead, you can choose a randomly generated name by leaving out the name, but beware - the names can be whack.
+Instead, you can choose a randomly generated name by leaving out the name, but beware - the names can be wack.
 
 ```
 heroku create
