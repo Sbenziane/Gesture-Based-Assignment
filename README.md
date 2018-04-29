@@ -24,7 +24,7 @@ Develop an application with a Natural User Interface(NUI), i.e. controlled by na
 [How To Manually Run the Finished Application](#how-to-manually-run-the-finished-application)  
 
 **Game Demonstration**  
-[<p align="center"><img src="https://lh3.googleusercontent.com/BEz-7rNWIg_jzus66sDXqeFtJtSFB9Qr8g9ntBN7tpQof0Zqz6ppg4BYfA_pL33V0bSuxkMzQ89u9qThzILUXpvvnraU7uUVwat7YzKmb63kaIrTNtLQw26dyzoOfoxI43K-aW8Lvfd0KO1IoLl5EaNghAw8NHmhUJeILwrBPOvx1j7JIk7KOs-OOSAh02tNzJKvIPbf_FrKYOs_bB6pIUFaQ3d90i9v5Y6NKOjSgPPVKtCTsoyIsOWUkanjYrqF8INRmq9aeUt7RM0BvaTtObrepJDGJ1VNYOV1tEeH6ra9JzHbZRcwjd0FdXQdSBAWqsfV1gnDn6Bf3G7f2YONeDWya9paW4b77BshVigygMcGd-qOdc0BpgOSAqbPOaGBQF2kK7B-GOpvgCdt5-1eXqAs1FixhqtHuOxKJRxC-crE0-tCceqvWCj7gB5um5UksbMn8_9fTE8YFETjtccxQnnsZkVRpoQb8HCydfT4N-Me-X8SbxzgXGbBl0msv7wBDgmyEeInmpF_gAV4rOGqzHtqpdG_0QbElagZ1zhHpaIkTjw4ODnbV2kgvFxCa0TzwoVeKBwzP5bLc-zpwvkIU3DWOq79uGdrnRBzzw=w1726-h982-no" width="75%"/></p>](https://youtu.be/W8-ndcDzO4Q "Buzz Wire Game Demo - Click to Watch!")
+A demonstration of the Buzz Wire Game is available on Youtube, [here](https://youtu.be/W8-ndcDzO4Q).
 
 ## Introduction
 Upon hearing the specifications of the project, we quickly formulated an idea to build a buzz wire game. This childhood game, very familiar to most, seemed like a ideal application to be controlled by gestures, as opposed to a feigned, impractical buzz wire game controlled by keyboard or mouse controls. With a broad idea as to what the end result of this project should be, we began brainstorming the actual implementation.
